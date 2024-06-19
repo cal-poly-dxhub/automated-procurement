@@ -1,0 +1,16 @@
+{
+  "contract_types": {
+    "goods": ["delivery_terms", "payment_terms", "warranty"],
+    "services": ["scope_of_work", "payment_terms", "confidentiality"],
+    "construction": ["scope_of_work", "timeline", "payment_terms", "liability"]
+  },
+  "clauses": {
+    "delivery_terms": "The goods shall be delivered within X days...",
+    "payment_terms": "Payment shall be made in the following manner...",
+    "warranty": "The seller warrants that the goods are free from defects...",
+    "scope_of_work": "The contractor shall perform the following tasks...",
+    "timeline": "The project shall be completed by...",
+    "confidentiality": "The contractor agrees to keep all information confidential...",
+    "liability": "The contractor shall be liable for..."
+  }
+}
