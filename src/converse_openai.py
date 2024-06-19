@@ -16,8 +16,6 @@ memory = ConversationBufferMemory()
 # Initialize the conversation chain
 conversation = ConversationChain(llm=llm, memory=memory)
 
-print("Welcome to the AI Chat! Type 'exit' to quit.")
-
 while True:
     user_input = input("You: ")
     if user_input.lower() == "exit":
