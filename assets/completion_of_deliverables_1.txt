@@ -1,0 +1,16 @@
+[X]. Completion of Deliverables
+1.1 For each Deliverable, [Contractor] shall provide written notice to [Client] of the anticipated actual completion date for such Deliverable no later than [X] days prior to such date.
+1.2 During the [X]-day period, [Contractor] will reasonably endeavor to provide advance access to the Deliverables to [Client] in order to facilitate prompt acceptance for the purpose of limiting impact on the schedule of the [project/program] contemplated by this Agreement.
+
+2. Acceptance of Deliverables
+2.1 The procedures for the acceptance by [Client] of the Deliverables [is/are] detailed in [Attachment/Exhibit/Section X].
+
+3. Delivery of Hardware Deliverables (if applicable)
+3.1 Delivery of the Hardware Deliverables shall be per the applicable Delivery Terms.
+3.2 [Client] Acceptance is required prior to shipment of the Hardware Deliverables.
+
+4. Completion of Milestones
+4.1 Upon the completion of the completion criteria for each Milestone specified in [Attachment/Exhibit/Section X], [Contractor] will provide written notice to [Client].
+
+5. Disputes
+5.1 In the event that a dispute arises between the Parties regarding the acceptance or rejection of a Deliverable or completion of a Milestone, such dispute shall be dealt with in accordance with [Dispute Resolution Section/Article X].

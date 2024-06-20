@@ -1,6 +1,5 @@
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
-from langchain.prompts import PromptTemplate
 from langchain_aws import ChatBedrock
 
 chain_of_thought_prompt = """You are an AI assistant with chain of thought reasoning capabilities. For each task, you should:
