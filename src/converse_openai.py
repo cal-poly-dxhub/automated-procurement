@@ -3,17 +3,13 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from langchain_openai import ChatOpenAI
 
-# Set your OpenAI API key
 load_dotenv()
 
-# Initialize the ChatOpenAI language model
 # ~./.env file should contain OPENAI_API_KEY
 llm = ChatOpenAI(model="gpt-3.5-turbo")
 
-# Initialize the memory for keeping track of the conversation
 memory = ConversationBufferMemory()
 
-# Initialize the conversation chain
 conversation = ConversationChain(llm=llm, memory=memory)
 
 while True:
