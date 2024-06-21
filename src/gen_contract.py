@@ -84,3 +84,5 @@ while True:
             print("AI:", j["question_for_user"])
         except Exception:
             print("AI:", response["response"])
+
+# see contract_4844.txt for first example of generated contract (I formatted it a little bit)
