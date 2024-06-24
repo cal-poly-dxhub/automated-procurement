@@ -7,7 +7,9 @@ from langchain_aws import ChatBedrock
 
 
 def write_to_file(contents: str) -> None:
-    filename = f"./assets/contract_{random.randint(1000, 9999)}.txt"
+    filename = (
+        f"./assets/contract_{random.randint(1000, 9999)}.txt"  # timestamo instead
+    )
     with open(filename, "w") as file:
         file.write(contents)
         print(f"Contract saved to {filename}")
@@ -24,6 +26,7 @@ chain_of_thought_prompt = (
 {template_contents}
 
 3. Identify the sections that need to be completed or customized based on the user's input.
+(Ask the user a question about a line item in the template to determine its relevancy ... )
 4. Ask the user ONE relevant and specific question to gather the necessary information for completing or customizing each section of the contract clause. Your questions should aim to elicit detailed and comprehensive responses from the user.
 5. Step-by-step, work with the user to fill in the missing details or customize the relevant sections of the contract clause template. Encourage the user to provide as much detail and clarity as possible. Note that you may alter the user's response to add detail, fix punctuation, and fix capitalization.
 6. Once all the necessary information has been gathered and the clause has been completed, provide only the final, customized version of the contract clause. The completed clause should be detailed, comprehensive, and address all relevant aspects of the contract.
