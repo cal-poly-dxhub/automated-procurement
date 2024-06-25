@@ -1,0 +1,68 @@
+/* ContractGen */
+
+.contract-gen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.message-container {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.user {
+  background-color: var(--primary-color);
+  color: #fff;
+  margin-left: auto;
+}
+
+.llm {
+  background-color: var(--secondary-color);
+  color: #fff;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #fff;
+  border-top: 1px solid var(--border-color);
+}
+
+.input-container input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  outline: none;
+}
+
+.input-container button {
+  margin-left: 8px;
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.input-container button:hover {
+  background-color: var(--hover-color);
+}

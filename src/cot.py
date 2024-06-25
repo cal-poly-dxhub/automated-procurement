@@ -9,7 +9,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 prompt_path = os.path.join(script_dir, "../assets/prompt.txt")
 template_path = os.path.join(script_dir, "../assets/delivery_and_acceptance.txt")
 
-
 # chat_bedrock = ChatBedrock(
 #     model_id="anthropic.claude-3-sonnet-20240229-v1:0",
 #     model_kwargs={"temperature": 0.1},
