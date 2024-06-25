@@ -1,26 +1,24 @@
-"""
-outline:
-chain of thought stuff for making a contract clause
-given a template for a contract, work with the user to fill in the missing details
-"""
-
 import json
 import os
 from typing import Any
 
 import boto3
+from langchain_aws import ChatBedrock
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 prompt_path = os.path.join(script_dir, "../assets/prompt.txt")
 template_path = os.path.join(script_dir, "../assets/delivery_and_acceptance.txt")
 
-with open(prompt_path, "r") as f:
-    PREPROMPT = f.read()
 
-bedrock: Any = boto3.client(
-    service_name="bedrock",
+# chat_bedrock = ChatBedrock(
+#     model_id="anthropic.claude-3-sonnet-20240229-v1:0",
+#     model_kwargs={"temperature": 0.1},
+# )  # type: ignore
+
+bedrock = boto3.client(
+    service_name="bedrock-runtime",
     region_name="us-west-2",
-    endpoint_url="https://bedrock.us-west-2.amazonaws.com",
+    # endpoint_url="https://bedrock.us-west-2.amazonaws.com",
 )
 context: list[str] = []
 user_responses: list[str] = []
@@ -57,7 +55,7 @@ def user_choose_clause() -> int:
 
 
 def set_preprompt(clause: str) -> str:
-    # set the pre-prompt\
+    # set the pre-prompt
     with open(prompt_path, "r") as f:
         preprompt = f.read()
 
@@ -102,7 +100,8 @@ def claude(
     max_tokens: int = 1024,
     top_p: int = 0,
 ) -> str:
-    prompt = "\n\nHuman:" + context + inp + "\n\nAssistant:"
+    prompt = f"{context}\nUser: {inp}\n\nAI:"
+
     body = json.dumps(
         {
             "prompt": prompt,
@@ -117,7 +116,18 @@ def claude(
     accept = "*/*"
     contentType = "application/json"
 
-    response = bedrock.invoke_model(
+    # response = chat_bedrock.invoke(
+    #     prompt,
+    #     # kwargs={
+    #     #     "temperature": temperature,
+    #     #     "top_p": top_p,
+    #     #     "max_tokens_to_sample": max_tokens,
+    #     # },
+    # )
+
+    # response = response.content
+
+    response: Any = bedrock.invoke_model(
         body=body, modelId=modelId, accept=accept, contentType=contentType
     )
 
@@ -139,9 +149,10 @@ def update_model_responses(response: str) -> None:
     model_responses.append(response)
 
 
-def update_all(context: str, user: str, model: str) -> None:
+def update_all(user: str, model: str) -> None:
     # update the context, user responses, and model responses
-    update_context(context)
+    update_context(f"<User>{user}</User>")
+    update_context(f"<AI>{model}</AI>")
     update_user_responses(user)
     update_model_responses(model)
 
@@ -152,21 +163,35 @@ def main():
         "Hello, I am LUCAS, your Legal Understanding and Contract Assistance System. I can help you fill in the missing details in a contract template."
     )
     clause = user_choose_clause()
-    print(f"Great! Let's work on the following clause:\n{clause}")
     clause_text = get_clause_text(clause)
+    print(f"Great! Let's work on the following clause:\n{clause_text[0]}")
 
-    # preprompt claude
-    preprompt = set_preprompt(clause_text)
-    claude_response = claude(
-        preprompt,
-        context,
+    while True:
+        if len(context) == 0:
+            preprompt = set_preprompt(clause_text)
+            context.append(preprompt)
+            human = ""
+        else:
+            human = user_responses[-1]
+
+        # prompt model
+        model_response = claude(human, context[-1])
+        model_response_text = extract_response(model_response)
+        print(model_response_text)
+
+        user_response = input()
+        update_all(user_response, model_response_text)
+        if user_response == "exit":
+            break
+
+    j = json.dumps(
+        {
+            "context": context,
+            "user_responses": user_responses,
+            "model_responses": model_responses,
+        }
     )
-
-    # extract response
-    extracted_response = extract_response(claude_response)
-
-    # print response
-    print(extracted_response)
+    print(j)
 
 
 if __name__ == "__main__":

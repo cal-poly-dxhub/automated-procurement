@@ -7,8 +7,6 @@ chat = ChatBedrock(
 )  # type: ignore
 
 messages = [
-    HumanMessage(
-        content="Translate this sentence from English to French. I love programming."
-    )
+    "This is a test message",
 ]
 print(chat.invoke(messages))
