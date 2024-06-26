@@ -2,7 +2,8 @@
   --primary-color: #a1a1a1;
   --secondary-color: #6c757d;
   --background-color: #515151;
-  --text-color: #343a40;
+  --alternate-background-color: #343a40;
+  --text-color: #dddddd;
   --hover-color: #0056b3;
   --border-color: #e9ecef;
 }

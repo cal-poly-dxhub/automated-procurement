@@ -1,0 +1,25 @@
+/* Navbar */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--alternate-background-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  height: 3rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.navbar-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  margin-left: 20px;
+}

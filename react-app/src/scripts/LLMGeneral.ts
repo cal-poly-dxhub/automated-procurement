@@ -12,10 +12,6 @@ const client = new BedrockRuntimeClient({
   },
 });
 
-const getResponse = (input: string) => {
-  return "This is a response from getLLMResponse.ts";
-};
-
 const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
 ) => {
@@ -39,4 +35,4 @@ const getBedrockResponse = async (
   return responses;
 };
 
-export { getBedrockResponse, getResponse };
+export { getBedrockResponse };

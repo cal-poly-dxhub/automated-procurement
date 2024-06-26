@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./ContractGen.css";
 
+import Navbar from "../components/Navbar";
 import { getBedrockResponse } from "../scripts/LLMGeneral";
 
 const ContractGen = () => {
@@ -36,26 +37,29 @@ const ContractGen = () => {
   };
 
   return (
-    <div className="contract-gen">
-      <div className="message-container">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.role === "user" ? "user" : "llm"}`}
-          >
-            {message.content[0].text}
-          </div>
-        ))}
-      </div>
-      <div className="input-container">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Type your message..."
-        />
-        <button onClick={handleSendMessage}>Send</button>
-        <button onClick={() => setMessages([])}>Clear</button>
+    <div>
+      <Navbar />
+      <div className="contract-gen">
+        <div className="message-container">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${message.role === "user" ? "user" : "llm"}`}
+            >
+              {message.content[0].text}
+            </div>
+          ))}
+        </div>
+        <div className="input-container">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder="Type your message..."
+          />
+          <button onClick={handleSendMessage}>Send</button>
+          <button onClick={() => setMessages([])}>Clear</button>
+        </div>
       </div>
     </div>
   );
