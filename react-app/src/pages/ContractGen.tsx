@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./ContractGen.css";
 
 import Navbar from "../components/Navbar";
@@ -9,6 +9,10 @@ const ContractGen = () => {
     { role: string; content: { type: string; text: string }[] }[]
   >([]);
   const [inputValue, setInputValue] = useState<string>("");
+
+  const user_responses = useRef<string[]>([]);
+  const llm_responses = useRef<string[]>([]);
+  const context = useRef<string[]>([]);
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);

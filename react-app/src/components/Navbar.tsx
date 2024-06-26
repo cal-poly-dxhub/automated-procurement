@@ -7,9 +7,7 @@ const Navbar = () => {
         <a href="/">DxHub Procurement Generator</a>
       </div>
       <div className="navbar-links">
-        <a href="/">Home</a>
-        <a href="/">About</a>
-        <a href="/">Contact</a>
+        <a href="/contract-gen">Contract Generator</a>
       </div>
     </nav>
   );
