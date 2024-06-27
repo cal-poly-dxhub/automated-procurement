@@ -65,13 +65,32 @@ const ContractGen = () => {
       return;
     }
 
-    const user = inputValue;
+    const userMessage = {
+      role: "user",
+      content: [{ type: "text", text: inputValue }],
+    };
+    setMessages([...messages, userMessage]);
     setInputValue("");
 
     setLoading(true);
-    const response = await generateContract(context, user);
-    // console.log(JSON.stringify([...context, response], null, 2));
-    setContext([...context, response]);
+    const response = await generateContract(context, inputValue);
+    if (!response) {
+      setLoading(false);
+      return;
+    }
+    const responseText = response.content[0].text
+      .split("<Response>")[1]
+      .split("</Response>")[0];
+    const assistantMessage = {
+      role: "assistant",
+      content: [{ type: "text", text: responseText }],
+    };
+    setMessages([...messages, userMessage, assistantMessage]);
+    if (!isNaN(parseInt(userMessage.content[0].text, 10))) {
+      setContext([...context, response]);
+    } else {
+      setContext([...context, userMessage, response]);
+    }
     setLoading(false);
   };
 
@@ -81,16 +100,6 @@ const ContractGen = () => {
       <div className="contract-gen">
         <div className="message-container">
           {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`message ${
-                message.role === "user" ? "user" : "assistant"
-              }`}
-            >
-              {message?.content[0]?.text}
-            </div>
-          ))}
-          {context.map((message, index) => (
             <div
               key={index}
               className={`message ${
@@ -113,6 +122,7 @@ const ContractGen = () => {
           <button onClick={() => setMessages([])}>Clear</button>
         </div>
       </div>
+      <div>{JSON.stringify(context)}</div>
     </div>
   );
 };

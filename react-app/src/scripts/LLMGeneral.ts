@@ -54,24 +54,35 @@ const generateContract = async (context: any[], userInput: string) => {
 const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
 ) => {
-  const payload = {
-    anthropic_version: "bedrock-2023-05-31",
-    max_tokens: 1024,
-    messages,
-  };
+  try {
+    const payload = {
+      anthropic_version: "bedrock-2023-05-31",
+      max_tokens: 2048,
+      messages,
+    };
 
-  const command = new InvokeModelCommand({
-    contentType: "application/json",
-    body: JSON.stringify(payload),
-    modelId: model_id,
-  });
+    const command = new InvokeModelCommand({
+      contentType: "application/json",
+      body: JSON.stringify(payload),
+      modelId: model_id,
+    });
 
-  const response = await client.send(command);
-  const decodedResponseBody = new TextDecoder().decode(response.body);
-  const responseBody = JSON.parse(decodedResponseBody);
-  const responses = responseBody.content;
-
-  return responses;
+    const response = await client.send(command);
+    console.log(JSON.stringify(response));
+    const decodedResponseBody = new TextDecoder().decode(response.body);
+    console.log(JSON.stringify(decodedResponseBody));
+    const responseBody = JSON.parse(decodedResponseBody);
+    const responses = responseBody.content;
+    return responses;
+  } catch (e) {
+    console.log(e);
+    return [
+      {
+        role: "assistant",
+        content: [{ type: "text", text: "An error occurred" }],
+      },
+    ];
+  }
 };
 
 export { generateContract, getBedrockResponse };
