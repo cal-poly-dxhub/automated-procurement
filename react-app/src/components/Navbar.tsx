@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <a href="/">DxHub Procurement Generator</a>
+        <a href="/">DxHub Procurement</a>
       </div>
       <div className="navbar-links">
         <a href="/contract-gen">Contract Generator</a>

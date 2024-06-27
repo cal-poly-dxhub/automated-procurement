@@ -1,43 +1,78 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import template from "../assets/template.json";
 import "./ContractGen.css";
 
 import Navbar from "../components/Navbar";
-import { getBedrockResponse } from "../scripts/LLMGeneral";
+import { generateContract } from "../scripts/LLMGeneral";
+
+const d_a_a = template["delivery_and_acceptance"];
 
 const ContractGen = () => {
-  const [messages, setMessages] = useState<
+  const firstMessages = [
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: "Hello, I am LUCAS, your Legal Understanding and Contract Assistance System. I can help you fill in a contract template.",
+        },
+      ],
+    },
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: "Please type the number of the clause to start with:",
+        },
+      ],
+    },
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "text",
+          text: d_a_a
+            .split("\n\n")
+            .map((clause: string, index: number) => {
+              if (index !== 0) {
+                return `${clause.split("\n")[0]}`;
+              }
+              return "";
+            })
+            .join("\n\n"),
+        },
+      ],
+    },
+  ];
+  const [messages, setMessages] =
+    useState<{ role: string; content: { type: string; text: string }[] }[]>(
+      firstMessages
+    );
+  const [inputValue, setInputValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [context, setContext] = useState<
     { role: string; content: { type: string; text: string }[] }[]
   >([]);
-  const [inputValue, setInputValue] = useState<string>("");
-
-  const user_responses = useRef<string[]>([]);
-  const llm_responses = useRef<string[]>([]);
-  const context = useRef<string[]>([]);
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
   const handleSendMessage = async () => {
-    if (inputValue.trim()) {
-      const prevMessages = [...messages];
-      setMessages([
-        ...prevMessages,
-        { content: [{ type: "text", text: inputValue }], role: "user" },
-      ]);
-      setInputValue("");
-
-      const response = await getBedrockResponse([
-        ...prevMessages,
-        { content: [{ type: "text", text: inputValue }], role: "user" },
-      ]);
-
-      setMessages([
-        ...prevMessages,
-        { content: [{ type: "text", text: inputValue }], role: "user" },
-        { content: response, role: "llm" },
-      ]);
+    if (inputValue === "") {
+      return;
     }
+
+    const user = inputValue;
+    setInputValue("");
+
+    setLoading(true);
+    const response = await generateContract(context, user);
+    // console.log(JSON.stringify([...context, response], null, 2));
+    setContext([...context, response]);
+    setLoading(false);
   };
 
   return (
@@ -48,11 +83,24 @@ const ContractGen = () => {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`message ${message.role === "user" ? "user" : "llm"}`}
+              className={`message ${
+                message.role === "user" ? "user" : "assistant"
+              }`}
             >
-              {message.content[0].text}
+              {message?.content[0]?.text}
             </div>
           ))}
+          {context.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${
+                message.role === "user" ? "user" : "assistant"
+              }`}
+            >
+              {message?.content[0]?.text}
+            </div>
+          ))}
+          {loading && <div className="message assistant">Loading...</div>}
         </div>
         <div className="input-container">
           <input

@@ -2,6 +2,11 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import p from "../assets/prompt.json";
+import template from "../assets/template.json";
+
+const d_a_a = template["delivery_and_acceptance"];
+const prompt = p["prompt"];
 
 const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
 const client = new BedrockRuntimeClient({
@@ -11,6 +16,40 @@ const client = new BedrockRuntimeClient({
     secretAccessKey: "",
   },
 });
+
+const generateContract = async (context: any[], userInput: string) => {
+  const ctx = context;
+  if (!isNaN(parseInt(userInput, 10))) {
+    const clauses = d_a_a.split("\n\n");
+    const clause = clauses[parseInt(userInput, 10)];
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: prompt.replace("--CLAUSE--", clause.toString()),
+        },
+      ],
+    });
+  } else {
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: userInput,
+        },
+      ],
+    });
+  }
+
+  const responses = await getBedrockResponse(ctx);
+  const response = {
+    role: "assistant",
+    content: responses,
+  };
+  return response;
+};
 
 const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
@@ -35,4 +74,4 @@ const getBedrockResponse = async (
   return responses;
 };
 
-export { getBedrockResponse };
+export { generateContract, getBedrockResponse };
