@@ -8,6 +8,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-links">
         <a href="/contract-gen">Contract Generator</a>
+        <a href="/contract-read">Contract Reader</a>
       </div>
     </nav>
   );

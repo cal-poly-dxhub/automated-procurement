@@ -6,7 +6,8 @@ import p from "../assets/prompt.json";
 import template from "../assets/template.json";
 
 const d_a_a = template["delivery_and_acceptance"];
-const prompt = p["prompt"];
+const gen_prompt = p["gen_prompt"];
+const read_prompt = p["read_prompt"];
 
 const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
 const client = new BedrockRuntimeClient({
@@ -27,7 +28,7 @@ const generateContract = async (context: any[], userInput: string) => {
       content: [
         {
           type: "text",
-          text: prompt.replace("--CLAUSE--", clause.toString()),
+          text: gen_prompt.replace("--CLAUSE--", clause.toString()),
         },
       ],
     });
@@ -44,6 +45,40 @@ const generateContract = async (context: any[], userInput: string) => {
   }
 
   const responses = await getBedrockResponse(ctx);
+  const response = {
+    role: "assistant",
+    content: responses,
+  };
+  return response;
+};
+
+const readContract = async (context: any[], userInput: string) => {
+  const ctx = context;
+  if (ctx.length === 0) {
+    const propmt = read_prompt.replace("--CONTRACT--", userInput);
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: propmt,
+        },
+      ],
+    });
+  } else {
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: userInput,
+        },
+      ],
+    });
+  }
+
+  const responses = await getBedrockResponse(ctx);
+
   const response = {
     role: "assistant",
     content: responses,
@@ -85,4 +120,4 @@ const getBedrockResponse = async (
   }
 };
 
-export { generateContract, getBedrockResponse };
+export { generateContract, getBedrockResponse, readContract };
