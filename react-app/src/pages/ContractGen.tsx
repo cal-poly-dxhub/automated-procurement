@@ -50,6 +50,7 @@ const ContractGen = () => {
       firstMessages
     );
   const [inputValue, setInputValue] = useState<string>("");
+  const [showContext, setShowContext] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [context, setContext] = useState<
@@ -120,9 +121,12 @@ const ContractGen = () => {
           />
           <button onClick={handleSendMessage}>Send</button>
           <button onClick={() => setMessages([])}>Clear</button>
+          <button onClick={() => setShowContext(!showContext)}>
+            {showContext ? "Hide" : "Show"} Context
+          </button>
         </div>
       </div>
-      <div>{JSON.stringify(context)}</div>
+      {showContext && <div>{JSON.stringify(context)}</div>}
     </div>
   );
 };
