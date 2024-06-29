@@ -1,11 +1,10 @@
 :root {
-  --primary-color: #a1a1a1;
+  --primary-color: #007bff;
   --secondary-color: #6c757d;
-  --background-color: #3a4653;
-  --alternate-background-color: #55656d;
-  --text-color: #dddddd;
+  --background-color: #faf3e4;
+  --text-color: #212529;
   --hover-color: #0056b3;
-  --border-color: #e9ecef;
+  --border-color: #dee2e6;
 }
 
 body {
@@ -16,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 code {

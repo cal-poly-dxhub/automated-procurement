@@ -78,6 +78,7 @@ const ContractRead = () => {
   return (
     <div>
       <Navbar />
+      <div className="chat-box-title">Contract Analysis Chat</div>
       <div className="contract-gen">
         <div className="message-container">
           {messages.map((message, index) => (

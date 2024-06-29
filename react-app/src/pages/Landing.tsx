@@ -6,7 +6,8 @@ const Landing = () => {
     <div className="landing-page">
       <Navbar />
       <div className="centered-text">
-        <h1>Welcome to DxHub Procurement</h1>
+        <h1>DxHub Automated Procurement</h1>
+        <h2>Powered by AWS</h2>
       </div>
     </div>
   );

@@ -98,6 +98,7 @@ const ContractGen = () => {
   return (
     <div>
       <Navbar />
+      <div className="chat-box-title">Contract Generator Chat</div>
       <div className="contract-gen">
         <div className="message-container">
           {messages.map((message, index) => (
