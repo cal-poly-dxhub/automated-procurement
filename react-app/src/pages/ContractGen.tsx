@@ -66,6 +66,11 @@ const ContractGen = () => {
       return;
     }
 
+    if (loading) {
+      alert("Please wait for the response.");
+      return;
+    }
+
     const userMessage = {
       role: "user",
       content: [{ type: "text", text: inputValue }],
@@ -79,6 +84,7 @@ const ContractGen = () => {
       setLoading(false);
       return;
     }
+
     const responseText = response.content[0].text
       .split("<Response>")[1]
       .split("</Response>")[0];
@@ -90,7 +96,7 @@ const ContractGen = () => {
     if (!isNaN(parseInt(userMessage.content[0].text, 10))) {
       setContext([...context, response]);
     } else {
-      setContext([...context, userMessage, response]);
+      setContext([...context, response]);
     }
     setLoading(false);
   };
@@ -119,6 +125,11 @@ const ContractGen = () => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Type your message..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSendMessage();
+              }
+            }}
           />
           <button onClick={handleSendMessage}>Send</button>
           <button onClick={() => setMessages([])}>Clear</button>

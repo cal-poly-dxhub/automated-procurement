@@ -20,7 +20,7 @@ const client = new BedrockRuntimeClient({
 
 const generateContract = async (context: any[], userInput: string) => {
   const ctx = context;
-  if (!isNaN(parseInt(userInput, 10))) {
+  if (userInput.length < 4 && !isNaN(parseInt(userInput, 10))) {
     const clauses = d_a_a.split("\n\n");
     const clause = clauses[parseInt(userInput, 10)];
     ctx.push({
@@ -44,12 +44,23 @@ const generateContract = async (context: any[], userInput: string) => {
     });
   }
 
-  const responses = await getBedrockResponse(ctx);
-  const response = {
-    role: "assistant",
-    content: responses,
-  };
-  return response;
+  try {
+    const responses = await getBedrockResponse(ctx);
+    const response = {
+      role: "assistant",
+      content: responses,
+    };
+
+    return response;
+  } catch (e) {
+    console.log(e);
+    return {
+      role: "assistant",
+      content: [
+        { type: "text", text: "<Response>An error occurred</Response>" },
+      ],
+    };
+  }
 };
 
 const readContract = async (context: any[], userInput: string) => {
@@ -77,13 +88,23 @@ const readContract = async (context: any[], userInput: string) => {
     });
   }
 
-  const responses = await getBedrockResponse(ctx);
+  try {
+    const responses = await getBedrockResponse(ctx);
 
-  const response = {
-    role: "assistant",
-    content: responses,
-  };
-  return response;
+    const response = {
+      role: "assistant",
+      content: responses,
+    };
+    return response;
+  } catch (e) {
+    console.log(e);
+    return {
+      role: "assistant",
+      content: [
+        { type: "text", text: "<Response>An error occurred</Response>" },
+      ],
+    };
+  }
 };
 
 const getBedrockResponse = async (

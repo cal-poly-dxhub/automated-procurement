@@ -46,6 +46,15 @@ const ContractRead = () => {
   };
 
   const handleSendMessage = async () => {
+    if (inputValue === "") {
+      return;
+    }
+
+    if (loading) {
+      alert("Please wait for the response.");
+      return;
+    }
+
     const userInput = inputValue;
     const oldMessages = messages;
     setInputValue("");
@@ -99,6 +108,11 @@ const ContractRead = () => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Type your message..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSendMessage();
+              }
+            }}
           />
           <button onClick={handleSendMessage}>Send</button>
           <button onClick={() => setMessages([])}>Clear</button>
