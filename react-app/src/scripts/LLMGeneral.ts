@@ -2,12 +2,15 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import g from "../assets/guidelines.json";
 import p from "../assets/prompt.json";
 import template from "../assets/template.json";
 
 const d_a_a = template["delivery_and_acceptance"];
 const gen_prompt = p["gen_prompt"];
 const read_prompt = p["read_prompt"];
+const sow_prompt = p["sow_prompt"];
+const guidelines = g["sow"];
 
 const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
 const client = new BedrockRuntimeClient({
@@ -107,6 +110,49 @@ const readContract = async (context: any[], userInput: string) => {
   }
 };
 
+const generateSOW = async (context: any[], userInput: string) => {
+  const ctx = context;
+  if (context.length === 0) {
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: sow_prompt.replace("--GUIDELINES--", guidelines),
+        },
+      ],
+    });
+  } else {
+    ctx.push({
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: userInput,
+        },
+      ],
+    });
+  }
+
+  try {
+    const responses = await getBedrockResponse(ctx);
+    const response = {
+      role: "assistant",
+      content: responses,
+    };
+
+    return response;
+  } catch (e) {
+    console.log(e);
+    return {
+      role: "assistant",
+      content: [
+        { type: "text", text: "<Response>An error occurred</Response>" },
+      ],
+    };
+  }
+};
+
 const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
 ) => {
@@ -124,9 +170,9 @@ const getBedrockResponse = async (
     });
 
     const response = await client.send(command);
-    console.log(JSON.stringify(response));
+    // console.log(JSON.stringify(response));
     const decodedResponseBody = new TextDecoder().decode(response.body);
-    console.log(JSON.stringify(decodedResponseBody));
+    // console.log(JSON.stringify(decodedResponseBody));
     const responseBody = JSON.parse(decodedResponseBody);
     const responses = responseBody.content;
     return responses;
@@ -141,4 +187,4 @@ const getBedrockResponse = async (
   }
 };
 
-export { generateContract, getBedrockResponse, readContract };
+export { generateContract, generateSOW, getBedrockResponse, readContract };
