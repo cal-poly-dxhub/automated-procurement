@@ -5,6 +5,10 @@ import "./SOWGen.css";
 import DocumentSidebar from "../components/DocumentSidebar";
 import Navbar from "../components/Navbar";
 
+import prompts from "../assets/prompt.json";
+import { getBedrockResponse, getInnerResponse } from "../scripts/LLMGeneral";
+const sow_prompt = prompts["sow_prompt"];
+
 const SOWGen = () => {
   const [messages, setMessages] = useState<
     { role: string; content: { type: string; text: string }[] }[]
@@ -19,14 +23,11 @@ const SOWGen = () => {
       content: string;
     }[]
   >([]);
-  const [currentClause, setCurrentClause] = useState<number | undefined>(
-    undefined
-  );
 
   const [context, setContext] = useState<
     {
       role: string;
-      content: { type: string; text?: string; image?: any }[];
+      content: { type: string; text: string }[];
     }[]
   >([]);
 
@@ -34,19 +35,95 @@ const SOWGen = () => {
     setInputValue(e.target.value);
   };
 
-  const handleSendMessage = async () => {
+  const handleAddClause = async (clause: { title: string; clause: string }) => {
     // add to prompt later
     // <Document>If you are finished completing the document, please write the finished document here. Otherwise leave this blank.</Document>
-  };
 
-  const handleAddClause = (clause: { title: string; clause: string }) => {
-    const initialMessage = {
+    // get the prompt and insert the clause content replacing --CLAUSE--
+    // add new message to the messages array saying "Add clause: {clause title}"
+    // create a new temp context array and push the user message
+    // send that to the backend
+    // get the response and push that to the messages array
+    // set the context array to the new context array
+
+    const newPrompt = sow_prompt.replace(
+      "--CLAUSE--",
+      clause.clause.toString()
+    );
+
+    const newMessage = {
       role: "user",
       content: [{ type: "text", text: `Add clause: ${clause.title}` }],
     };
-    setMessages([...messages, initialMessage]);
-    setInputValue(`Provide more details about the clause "${clause.title}".`);
-    setCurrentClause(currentDocument.length);
+    const allMessages = [...messages, newMessage];
+
+    setMessages(allMessages);
+
+    const newContext = [
+      ...context,
+      { role: "user", content: [{ type: "text", text: newPrompt }] },
+    ];
+    setContext(newContext);
+
+    setLoading(true);
+    const r = await getBedrockResponse(newContext);
+    const messageR = getInnerResponse(r);
+    setMessages([
+      ...allMessages,
+      {
+        role: "assistant",
+        content: [
+          {
+            type: "text",
+            text: messageR,
+          },
+        ],
+      },
+    ]);
+    newContext.push({ role: "assistant", content: r });
+    setContext(newContext);
+    setLoading(false);
+  };
+
+  const handleSendMessage = async () => {
+    if (inputValue.trim() === "") {
+      return;
+    }
+
+    const ui = inputValue;
+    setInputValue("");
+
+    const newMessage = {
+      role: "user",
+      content: [{ type: "text", text: ui }],
+    };
+
+    const allMessages = [...messages, newMessage];
+    setMessages(allMessages);
+
+    const newContext = [
+      ...context,
+      { role: "user", content: [{ type: "text", text: ui }] },
+    ];
+    setContext(newContext);
+    setLoading(true);
+    const r = await getBedrockResponse(newContext);
+    const messageR = getInnerResponse(r);
+    setMessages([
+      ...allMessages,
+      {
+        role: "assistant",
+        content: [
+          {
+            type: "text",
+            text: messageR,
+          },
+        ],
+      },
+    ]);
+    newContext.push({ role: "assistant", content: r });
+    setContext(newContext);
+    setLoading(false);
   };
 
   const handleRemoveClause = (index: number) => {
@@ -59,11 +136,14 @@ const SOWGen = () => {
       <Navbar />
       <DocumentSidebar
         clauses={SOW}
-        currentClause={currentClause}
-        setCurrentClause={setCurrentClause}
         currentDocument={currentDocument}
+        setCurrentDocument={setCurrentDocument}
         handleAddClause={handleAddClause}
         handleRemoveClause={handleRemoveClause}
+        onSubmit={() => {
+          setMessages([]);
+          setContext([]);
+        }}
       />
       <div className="sow-container">
         <div className="chat-box-title">Scope of Work Generator Chat</div>

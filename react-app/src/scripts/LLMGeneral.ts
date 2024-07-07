@@ -107,52 +107,6 @@ const readContract = async (context: any[], userInput: string) => {
   }
 };
 
-const generateSOW = async (context: any[], userInput: string) => {
-  const ctx = context;
-  if (context.length === 0) {
-    ctx.push({
-      role: "user",
-      content: [
-        {
-          type: "text",
-          text: sow_prompt.replace(
-            "--CLAUSE--",
-            "REPLACE ME THIBUJGH VGVJUGCFNHMGV"
-          ),
-        },
-      ],
-    });
-  } else {
-    ctx.push({
-      role: "user",
-      content: [
-        {
-          type: "text",
-          text: userInput,
-        },
-      ],
-    });
-  }
-
-  try {
-    const responses = await getBedrockResponse(ctx);
-    const response = {
-      role: "assistant",
-      content: responses,
-    };
-
-    return response;
-  } catch (e) {
-    console.log(e);
-    return {
-      role: "assistant",
-      content: [
-        { type: "text", text: "<Response>An error occurred</Response>" },
-      ],
-    };
-  }
-};
-
 const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
 ) => {
@@ -187,4 +141,13 @@ const getBedrockResponse = async (
   }
 };
 
-export { generateContract, generateSOW, getBedrockResponse, readContract };
+const getInnerResponse = (response: { type: string; text: string }[]) => {
+  console.log(JSON.stringify(response));
+  // return text inside of <response> tag inside of the text
+  return (
+    response[0].text.split("<Response>")[1].split("</Response>")[0] ||
+    "Error Parsing Response"
+  );
+};
+
+export { generateContract, getBedrockResponse, getInnerResponse, readContract };

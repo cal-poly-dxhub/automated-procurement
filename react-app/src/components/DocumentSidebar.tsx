@@ -2,30 +2,39 @@ import { useState } from "react";
 
 const DocumentSidebar = ({
   clauses,
-  currentClause,
-  setCurrentClause,
   currentDocument,
+  setCurrentDocument,
   handleAddClause,
   handleRemoveClause,
+  onSubmit,
 }: {
   clauses: { title: string; clause: string }[];
   currentDocument: { title: string; content: string }[];
-  currentClause: number | undefined;
-  setCurrentClause: (clause: number | undefined) => void;
+  setCurrentDocument: (document: { title: string; content: string }[]) => void;
   handleAddClause: (clause: { title: string; clause: string }) => void;
   handleRemoveClause: (index: number) => void;
+  onSubmit: () => void;
 }) => {
   const [clauseText, setClauseText] = useState("");
+  const [currentClause, setCurrentClause] = useState<number | undefined>();
+  const [showDocument, setShowDocument] = useState(false);
 
   const handleSubmitClause = () => {
     if (currentClause !== undefined) {
-      handleAddClause({
-        title: clauses[currentClause].title,
-        clause: clauseText,
-      });
+      const newDocument = [
+        ...currentDocument,
+        { title: clauses[currentClause].title, content: clauseText },
+      ];
+      setCurrentDocument(newDocument);
       setClauseText("");
       setCurrentClause(undefined);
+      onSubmit();
     }
+  };
+
+  const handleCancelClause = () => {
+    setClauseText("");
+    setCurrentClause(undefined);
   };
 
   return (
@@ -44,7 +53,10 @@ const DocumentSidebar = ({
               <span>{clause.title}</span>
               <button
                 style={styles.addButton}
-                onClick={() => handleAddClause(clause)}
+                onClick={() => {
+                  setCurrentClause(index);
+                  handleAddClause(clause);
+                }}
                 disabled={currentClause !== undefined}
               >
                 Add
@@ -74,10 +86,28 @@ const DocumentSidebar = ({
               placeholder="Paste the clause content here..."
             />
             <button onClick={handleSubmitClause}>Submit Clause</button>
-            <button onClick={() => {}}>See Document</button>
+            <button onClick={handleCancelClause}>Cancel</button>
+            <button
+              onClick={() => {
+                setShowDocument(!showDocument);
+              }}
+            >
+              {showDocument ? "Hide Document" : "Show Document"}
+            </button>
           </div>
         )}
       </div>
+      {showDocument && (
+        <div>
+          <h2>Generated Document</h2>
+          {currentDocument.map((clause, index) => (
+            <div key={index}>
+              <h3>{clause.title}</h3>
+              <p>{clause.content}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
