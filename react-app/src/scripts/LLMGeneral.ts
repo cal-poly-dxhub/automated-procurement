@@ -2,15 +2,12 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import g from "../assets/guidelines.json";
 import p from "../assets/prompt.json";
-import template from "../assets/template.json";
 
-const d_a_a = template["delivery_and_acceptance"];
 const gen_prompt = p["gen_prompt"];
 const read_prompt = p["read_prompt"];
 const sow_prompt = p["sow_prompt"];
-const guidelines = g["sow"];
+// const guidelines = g["sow"];
 
 const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
 const client = new BedrockRuntimeClient({
@@ -24,7 +21,7 @@ const client = new BedrockRuntimeClient({
 const generateContract = async (context: any[], userInput: string) => {
   const ctx = context;
   if (userInput.length < 4 && !isNaN(parseInt(userInput, 10))) {
-    const clauses = d_a_a.split("\n\n");
+    const clauses = "TFGCFTJGCNHVGKFJTDGNCVHGJ".split("\n\n");
     const clause = clauses[parseInt(userInput, 10)];
     ctx.push({
       role: "user",
@@ -118,7 +115,10 @@ const generateSOW = async (context: any[], userInput: string) => {
       content: [
         {
           type: "text",
-          text: sow_prompt.replace("--GUIDELINES--", guidelines),
+          text: sow_prompt.replace(
+            "--CLAUSE--",
+            "REPLACE ME THIBUJGH VGVJUGCFNHMGV"
+          ),
         },
       ],
     });

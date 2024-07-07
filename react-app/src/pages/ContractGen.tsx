@@ -1,11 +1,8 @@
 import { useState } from "react";
-import template from "../assets/template.json";
 import "./ContractGen.css";
 
 import Navbar from "../components/Navbar";
 import { generateContract } from "../scripts/LLMGeneral";
-
-const d_a_a = template["delivery_and_acceptance"];
 
 const ContractGen = () => {
   const firstMessages = [
@@ -32,7 +29,7 @@ const ContractGen = () => {
       content: [
         {
           type: "text",
-          text: d_a_a
+          text: "OUIGYKFCJHGVUHGYHCMVLUHIGFHCFNVBM<KGJFHCNVB MNHJG"
             .split("\n\n")
             .map((clause: string, index: number) => {
               if (index !== 0) {

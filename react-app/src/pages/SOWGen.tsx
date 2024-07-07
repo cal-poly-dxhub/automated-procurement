@@ -1,13 +1,9 @@
 import { useState } from "react";
-import gl from "../assets/guidelines.json";
-import prompts from "../assets/prompt.json";
+import SOW from "../assets/SOW.json";
 import "./SOWGen.css";
 
+import DocumentSidebar from "../components/DocumentSidebar";
 import Navbar from "../components/Navbar";
-import { generateSOW } from "../scripts/LLMGeneral";
-
-const sow_prompt = prompts["sow_prompt"];
-const guidelines = gl["sow"];
 
 const SOWGen = () => {
   const [messages, setMessages] = useState<
@@ -16,6 +12,16 @@ const SOWGen = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [showContext, setShowContext] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [currentDocument, setCurrentDocument] = useState<
+    {
+      title: string;
+      content: string;
+    }[]
+  >([]);
+  const [currentClause, setCurrentClause] = useState<number | undefined>(
+    undefined
+  );
 
   const [context, setContext] = useState<
     {
@@ -29,81 +35,73 @@ const SOWGen = () => {
   };
 
   const handleSendMessage = async () => {
-    if (inputValue === "") {
-      return;
-    }
+    // add to prompt later
+    // <Document>If you are finished completing the document, please write the finished document here. Otherwise leave this blank.</Document>
+  };
 
-    if (loading) {
-      alert("Please wait for the response.");
-      return;
-    }
-
-    const userMessage = {
+  const handleAddClause = (clause: { title: string; clause: string }) => {
+    const initialMessage = {
       role: "user",
-      content: [{ type: "text", text: inputValue }],
+      content: [{ type: "text", text: `Add clause: ${clause.title}` }],
     };
-    setMessages([...messages, userMessage]);
-    setInputValue("");
+    setMessages([...messages, initialMessage]);
+    setInputValue(`Provide more details about the clause "${clause.title}".`);
+    setCurrentClause(currentDocument.length);
+  };
 
-    setLoading(true);
-    const response = await generateSOW(context, inputValue);
-    if (!response) {
-      setLoading(false);
-      return;
-    }
-
-    const responseText = response.content[0].text
-      .split("<Response>")[1]
-      .split("</Response>")[0];
-    const assistantMessage = {
-      role: "assistant",
-      content: [{ type: "text", text: responseText }],
-    };
-    setMessages([...messages, userMessage, assistantMessage]);
-
-    setContext([...context, response]);
-
-    setLoading(false);
+  const handleRemoveClause = (index: number) => {
+    const newDocument = currentDocument.filter((_, i) => i !== index);
+    setCurrentDocument(newDocument);
   };
 
   return (
     <div>
       <Navbar />
-      <div className="chat-box-title">Scope of Work Generator Chat</div>
-      <div className="contract-gen">
-        <div className="message-container">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`message ${
-                message.role === "user" ? "user" : "assistant"
-              }`}
-            >
-              {message?.content[0]?.text}
-            </div>
-          ))}
-          {loading && <div className="message assistant">Loading...</div>}
+      <DocumentSidebar
+        clauses={SOW}
+        currentClause={currentClause}
+        setCurrentClause={setCurrentClause}
+        currentDocument={currentDocument}
+        handleAddClause={handleAddClause}
+        handleRemoveClause={handleRemoveClause}
+      />
+      <div className="sow-container">
+        <div className="chat-box-title">Scope of Work Generator Chat</div>
+        <div className="contract-gen">
+          <div className="message-container">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`message ${
+                  message.role === "user" ? "user" : "assistant"
+                }`}
+              >
+                {message?.content[0]?.text}
+              </div>
+            ))}
+            {loading && <div className="message assistant">Loading...</div>}
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSendMessage();
+                }
+              }}
+            />
+            <button onClick={handleSendMessage}>Send</button>
+            <button onClick={() => setMessages([])}>Clear</button>
+            <button onClick={() => setShowContext(!showContext)}>
+              {showContext ? "Hide" : "Show"} Context
+            </button>
+          </div>
         </div>
-        <div className="input-container">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Type your message..."
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSendMessage();
-              }
-            }}
-          />
-          <button onClick={handleSendMessage}>Send</button>
-          <button onClick={() => setMessages([])}>Clear</button>
-          <button onClick={() => setShowContext(!showContext)}>
-            {showContext ? "Hide" : "Show"} Context
-          </button>
-        </div>
+        {showContext && <div>{JSON.stringify(context)}</div>}
       </div>
-      {showContext && <div>{JSON.stringify(context)}</div>}
     </div>
   );
 };
