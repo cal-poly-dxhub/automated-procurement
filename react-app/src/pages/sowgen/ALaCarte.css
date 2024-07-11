@@ -1,0 +1,38 @@
+.a-la-carte {
+  height: 92vh;
+  bottom: 0;
+  width: 28vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 28vw;
+  overflow-y: auto;
+  background-color: var(--background-color);
+}
+
+.clauses {
+  width: 28vw;
+}
+
+.clause-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.clause-selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #f0ece2;
+}
+
+.clause-item:last-child,
+.clause-selected:last-child {
+  border-bottom: none;
+}

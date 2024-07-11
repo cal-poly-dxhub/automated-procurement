@@ -1,19 +1,22 @@
-.contract-gen {
+.sow-tri-container {
+  display: flex;
+  background-color: var(--background-color);
+  justify-content: space-between;
+}
+
+.sow-container {
   display: flex;
   flex-direction: column;
-  height: 85vh;
-  max-width: 800px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  height: 92vh;
+  width: 40vw;
+  /* bordr line on each side */
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
 }
 
 .contract-gen-header {
   background-color: var(--primary-color);
   color: #ffffff;
-  padding: 16px;
   text-align: center;
   font-weight: bold;
 }
@@ -21,7 +24,7 @@
 /* Message Container Styles */
 .message-container {
   flex: 1;
-  padding: 16px;
+  width: 33vw;
   overflow-y: auto;
   background-color: var(--background-color);
 }
@@ -47,9 +50,6 @@
 
 /* Input Container Styles */
 .input-container {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
   background-color: var(--background-color);
   border-top: 1px solid var(--border-color);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);

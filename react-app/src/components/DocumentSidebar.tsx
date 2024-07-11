@@ -16,8 +16,8 @@ const DocumentSidebar = ({
   onSubmit: () => void;
 }) => {
   const [clauseText, setClauseText] = useState("");
-  const [currentClause, setCurrentClause] = useState<number | undefined>();
   const [showDocument, setShowDocument] = useState(false);
+  const [currentClause, setCurrentClause] = useState<number | undefined>();
 
   const handleSubmitClause = () => {
     if (currentClause !== undefined) {

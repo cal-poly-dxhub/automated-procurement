@@ -3,9 +3,9 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ContractGen from "./pages/ContractGen";
 import ContractRead from "./pages/ContractRead";
 import Landing from "./pages/Landing";
-import SOWGen from "./pages/SOWGen";
+import SOWGen from "./pages/sowgen/SOWGen";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -16,6 +16,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

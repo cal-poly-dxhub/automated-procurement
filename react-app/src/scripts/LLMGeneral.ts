@@ -6,8 +6,6 @@ import p from "../assets/prompt.json";
 
 const gen_prompt = p["gen_prompt"];
 const read_prompt = p["read_prompt"];
-const sow_prompt = p["sow_prompt"];
-// const guidelines = g["sow"];
 
 const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
 const client = new BedrockRuntimeClient({
@@ -143,7 +141,6 @@ const getBedrockResponse = async (
 
 const getInnerResponse = (response: { type: string; text: string }[]) => {
   console.log(JSON.stringify(response));
-  // return text inside of <response> tag inside of the text
   return (
     response[0].text.split("<Response>")[1].split("</Response>")[0] ||
     "Error Parsing Response"
