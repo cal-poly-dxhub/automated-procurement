@@ -9,6 +9,9 @@ const SOWGen = ({
   setLoading,
   context,
   setContext,
+  setAccepted,
+  currentClause,
+  setCurrentClause,
 }: {
   messages: { role: string; content: { type: string; text: string }[] }[];
   setMessages: (
@@ -20,9 +23,13 @@ const SOWGen = ({
   setContext: (
     context: { role: string; content: { type: string; text: string }[] }[]
   ) => void;
+  setAccepted: (accepted: boolean) => void;
+  currentClause: { title: string; clause: string };
+  setCurrentClause: (currentClause: { title: string; clause: string }) => void;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [showContext, setShowContext] = useState<boolean>(false);
+  const [clausePopup, setClausePopup] = useState<boolean>(false);
 
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
@@ -51,7 +58,15 @@ const SOWGen = ({
     setContext(newContext);
     setLoading(true);
     const r = await getBedrockResponse(newContext);
-    const messageR = getInnerResponse(r);
+    const m = getInnerResponse(r);
+    const messageR = m.response;
+    const messageC = m.clause;
+
+    if (messageC) {
+      setCurrentClause({ title: "title placeholder", clause: messageC });
+      setClausePopup(true);
+    }
+
     setMessages([
       ...allMessages,
       {
@@ -87,6 +102,33 @@ const SOWGen = ({
             </div>
           ))}
           {loading && <div className="message assistant">Loading...</div>}
+          {clausePopup && (
+            <div className="clause-popup-background">
+              <div className="clause-popup">
+                <div className="clause">
+                  <h3 className="clause-title">{currentClause.title}</h3>
+                  <p className="clause-content">{currentClause.clause}</p>
+                </div>
+                <div className="clause-buttons">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      setAccepted(true);
+                      setClausePopup(false);
+                    }}
+                  >
+                    Accept Clause
+                  </button>
+                  <button
+                    className="button"
+                    onClick={() => setClausePopup(false)}
+                  >
+                    Continue Editing
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="input-container">
           <input

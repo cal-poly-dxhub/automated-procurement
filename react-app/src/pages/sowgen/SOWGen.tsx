@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SOW from "../../assets/SOW.json";
 import "./SOWGen.css";
@@ -22,8 +22,21 @@ const SOWGen = () => {
     { role: string; content: { type: string; text: string }[] }[]
   >([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [accepted, setAccepted] = useState<boolean>(false);
+  const [currentClause, setCurrentClause] = useState<{
+    title: string;
+    clause: string;
+  }>({
+    title: "",
+    clause: "",
+  });
 
-  const [commitClause, setCommitClause] = useState<boolean>(false);
+  const [document, setDocument] = useState<
+    | {
+        title: string;
+        content: string;
+      }[]
+  >([]);
 
   const [context, setContext] = useState<
     {
@@ -64,7 +77,14 @@ const SOWGen = () => {
 
     setLoading(true);
     const r = await getBedrockResponse(newContext);
-    const messageR = getInnerResponse(r);
+    const m = getInnerResponse(r);
+    const messageR = m.response;
+    const messageC = m.clause;
+
+    if (messageC) {
+      alert("(SOWGEN) Add clause: " + messageC);
+    }
+
     setMessages([
       ...allMessages,
       {
@@ -82,6 +102,27 @@ const SOWGen = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (!accepted) {
+      return;
+    }
+
+    alert("Accepted");
+
+    // add latest clause to document
+    const newDocument = [
+      ...document,
+      {
+        title: "title placeholder",
+        content: currentClause.clause,
+      },
+    ];
+    setDocument(newDocument);
+
+    setAccepted(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accepted]);
+
   return (
     <div>
       <Navbar />
@@ -98,15 +139,11 @@ const SOWGen = () => {
           setLoading={setLoading}
           context={context}
           setContext={setContext}
+          setAccepted={setAccepted}
+          currentClause={currentClause}
+          setCurrentClause={setCurrentClause}
         />
-        <CurDocument
-          latestClause={{
-            title: "Test Clause",
-            content: "This is a test clause.",
-          }}
-          commitClause={commitClause}
-          setCommitClause={setCommitClause}
-        />
+        <CurDocument document={document} setDocument={setDocument} />
       </div>
     </div>
   );

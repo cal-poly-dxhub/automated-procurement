@@ -140,11 +140,13 @@ const getBedrockResponse = async (
 };
 
 const getInnerResponse = (response: { type: string; text: string }[]) => {
-  console.log(JSON.stringify(response));
-  return (
-    response[0].text.split("<Response>")[1].split("</Response>")[0] ||
-    "Error Parsing Response"
-  );
+  return {
+    response:
+      response[0]?.text?.split("<Response>")[1]?.split("</Response>")[0] ??
+      "No response found",
+    clause:
+      response[0]?.text?.split("<Clause>")[1]?.split("</Clause>")[0] ?? "",
+  };
 };
 
 export { generateContract, getBedrockResponse, getInnerResponse, readContract };

@@ -1,41 +1,20 @@
-import { useEffect, useState } from "react";
 import { createDocument } from "../../scripts/Docx";
 import "./CurDocument.css";
 
 const CurDocument = ({
-  latestClause,
-  commitClause,
-  setCommitClause,
+  document,
+  setDocument,
 }: {
-  latestClause: {
-    title: string;
-    content: string;
-  };
-  commitClause: boolean;
-  setCommitClause: (commitClause: boolean) => void;
+  document: { title: string; content: string }[];
+  setDocument: (document: { title: string; content: string }[]) => void;
 }) => {
-  const [document, setDocument] = useState<
-    {
-      title: string;
-      content: string;
-    }[]
-  >([]);
-
   const onTestPress = () => {
-    setDocument([...document, latestClause]);
+    setDocument([...document, { title: "Test", content: "Test Content" }]);
   };
 
   const handleExport = () => {
     createDocument("test", document);
   };
-
-  useEffect(() => {
-    if (commitClause) {
-      setDocument([...document, latestClause]);
-      setCommitClause(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [commitClause]);
 
   return (
     <div className="current-document">
