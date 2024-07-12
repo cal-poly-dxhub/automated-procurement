@@ -1,7 +1,8 @@
-.sow-tri-container {
-  display: flex;
-  background-color: var(--background-color);
-  justify-content: space-between;
+.contract-gen-header {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
 }
 
 .sow-container {
@@ -14,17 +15,10 @@
   border-right: 1px solid var(--border-color);
 }
 
-.contract-gen-header {
-  background-color: var(--primary-color);
-  color: #ffffff;
-  text-align: center;
-  font-weight: bold;
-}
-
 /* Message Container Styles */
 .message-container {
   flex: 1;
-  width: 50vw;
+  width: 35vw;
   overflow-y: auto;
   background-color: var(--background-color);
 }
@@ -33,7 +27,7 @@
   padding: 8px 16px;
   border-radius: 20px;
   margin-bottom: 6px;
-  max-width: 70%;
+  max-width: 60%;
   word-wrap: break-word;
 }
 

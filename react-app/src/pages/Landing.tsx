@@ -11,7 +11,7 @@ const Landing = () => {
         <div className="button-row">
           <ul className="ul-row">
             <li>
-              <a href="/sow-gen" className="button">
+              <a href="/sow-intro" className="button">
                 Scope of Work Generator
               </a>
             </li>

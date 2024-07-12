@@ -1,0 +1,53 @@
+/* IntroPage Styles */
+.intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group textarea {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.intro-container button {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.intro-container button:hover {
+  background-color: var(--hover-color);
+}
