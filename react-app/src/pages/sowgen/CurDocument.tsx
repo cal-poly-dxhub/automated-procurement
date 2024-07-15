@@ -5,10 +5,12 @@ const CurDocument = ({
   document,
   setDocument,
   documentTitle,
+  setCurrentClause,
 }: {
   document: { title: string; content: string }[];
   setDocument: (document: { title: string; content: string }[]) => void;
   documentTitle: string | null;
+  setCurrentClause: (currentClause: { title: string; clause: string }) => void;
 }) => {
   const handleExport = () => {
     if (!documentTitle) {
@@ -29,7 +31,14 @@ const CurDocument = ({
             <h3>{doc.title}</h3>
             <p>{doc.content}</p>
             <div className="doc-buttons">
-              <button className="button">Edit</button>
+              <button
+                onClick={() => {
+                  setCurrentClause({ title: doc.title, clause: doc.content });
+                }}
+                className="button"
+              >
+                Edit
+              </button>
               <button
                 onClick={() => {
                   setDocument(document.filter((_, i) => i !== index));

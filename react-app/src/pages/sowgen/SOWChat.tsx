@@ -89,6 +89,14 @@ const SOWGen = ({
 
     return currentContext.map((message, index) => {
       if (message.role === "assistant") {
+        if (getCaluseTags(message.content) !== "") {
+          return (
+            <div key={index} className="message assistant">
+              {getCaluseTags(message.content)}
+            </div>
+          );
+        }
+
         return (
           <div key={index} className="message assistant">
             {getResponseTags(message.content)}

@@ -93,14 +93,26 @@ const SOWGen = () => {
       return;
     }
 
-    const newDocument = [
-      ...document,
-      {
+    const existingDocumentIndex = document.findIndex(
+      (doc) => doc.title === currentClause.title
+    );
+    if (existingDocumentIndex !== -1) {
+      const newDocument = [...document];
+      newDocument[existingDocumentIndex] = {
         title: currentClause.title,
         content: currentClause.clause,
-      },
-    ];
-    setDocument(newDocument);
+      };
+      setDocument(newDocument);
+    } else {
+      const newDocument = [
+        ...document,
+        {
+          title: currentClause.title,
+          content: currentClause.clause,
+        },
+      ];
+      setDocument(newDocument);
+    }
 
     setAccepted(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,6 +140,7 @@ const SOWGen = () => {
           document={document}
           setDocument={setDocument}
           documentTitle={documentTitle}
+          setCurrentClause={setCurrentClause}
         />
       </div>
     </div>
