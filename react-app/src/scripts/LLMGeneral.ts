@@ -139,6 +139,7 @@ const getBedrockResponse = async (
   }
 };
 
+// shouldnt return clause, need separate function for that
 const getInnerResponse = (response: { type: string; text: string }[]) => {
   return {
     response:

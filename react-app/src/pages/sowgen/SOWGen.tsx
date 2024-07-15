@@ -14,14 +14,26 @@ const sow_prompt = prompts["sow_prompt"];
 
 const SOWGen = () => {
   const [searchParams] = useSearchParams();
+
+  // from params
   const userInstitution = searchParams.get("userInstitution");
   const hiringInstitution = searchParams.get("hiringInstitution");
   const scopeOfWork = searchParams.get("scopeOfWork");
 
+  // for sowgen
   const [messages, setMessages] = useState<
     { role: string; content: { type: string; text: string }[] }[]
   >([]);
+  const [context, setContext] = useState<
+    {
+      role: string;
+      content: { type: string; text: string }[];
+    }[]
+  >([]);
+
   const [loading, setLoading] = useState<boolean>(false);
+
+  // for curdocument
   const [accepted, setAccepted] = useState<boolean>(false);
   const [currentClause, setCurrentClause] = useState<{
     title: string;
@@ -30,19 +42,11 @@ const SOWGen = () => {
     title: "",
     clause: "",
   });
-
   const [document, setDocument] = useState<
     | {
         title: string;
         content: string;
       }[]
-  >([]);
-
-  const [context, setContext] = useState<
-    {
-      role: string;
-      content: { type: string; text: string }[];
-    }[]
   >([]);
 
   const handleAddClause = async (clause: { title: string; clause: string }) => {
@@ -102,6 +106,7 @@ const SOWGen = () => {
     setLoading(false);
   };
 
+  // if accepted add to document
   useEffect(() => {
     if (!accepted) {
       return;

@@ -13,6 +13,7 @@ const SOWGen = ({
   currentClause,
   setCurrentClause,
 }: {
+  // this needs work oh my
   messages: { role: string; content: { type: string; text: string }[] }[];
   setMessages: (
     messages: { role: string; content: { type: string; text: string }[] }[]

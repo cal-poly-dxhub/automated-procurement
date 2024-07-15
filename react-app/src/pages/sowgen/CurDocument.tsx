@@ -8,11 +8,13 @@ const CurDocument = ({
   document: { title: string; content: string }[];
   setDocument: (document: { title: string; content: string }[]) => void;
 }) => {
+  // test press no longer needed
   const onTestPress = () => {
     setDocument([...document, { title: "Test", content: "Test Content" }]);
   };
 
   const handleExport = () => {
+    // name it not test
     createDocument("test", document);
   };
 
