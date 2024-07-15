@@ -19,7 +19,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 5px 10px 15px;
+  border-radius: 5px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -27,9 +28,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border-color);
-  background-color: #f0ece2;
+  padding: 10px 5px 10px 15px;
+  border-radius: 5px;
+  border-bottom: 1px solid var(--background-color);
+  background-color: #dcb64e;
 }
 
 .clause-item:last-child,

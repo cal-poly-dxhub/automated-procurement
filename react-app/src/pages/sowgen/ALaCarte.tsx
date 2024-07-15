@@ -6,32 +6,34 @@ const ALaCarte = ({
   handleAddClause,
 }: {
   clauses: any[];
-  currentClause: number | undefined;
+  currentClause: { title: string; clause: string };
   handleAddClause: (clause: any) => void;
 }) => {
   return (
     <div className="a-la-carte">
-      {/* shows all clauses with buttons to chat w the llm about */}
       <h1>Add Clauses</h1>
       <div className="clauses">
-        {clauses.map((clause, index) => (
-          <div
-            key={index}
-            className={
-              currentClause === clause ? "clause-selected" : "clause-item"
-            }
-          >
-            <span>{clause.title}</span>
-            <button
-              className="button"
-              onClick={() => {
-                handleAddClause(clause);
-              }}
+        {clauses.map((clause, index) => {
+          const selected = currentClause.title === clause.title;
+
+          return (
+            <div
+              key={index}
+              className={selected ? "clause-selected" : "clause-item"}
             >
-              Add Clause
-            </button>
-          </div>
-        ))}
+              <span>{clause.title}</span>
+              <button
+                className="button"
+                disabled={selected}
+                onClick={() => {
+                  handleAddClause(clause);
+                }}
+              >
+                Add Clause
+              </button>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

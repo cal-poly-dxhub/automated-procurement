@@ -150,4 +150,21 @@ const getInnerResponse = (response: { type: string; text: string }[]) => {
   };
 };
 
-export { generateContract, getBedrockResponse, getInnerResponse, readContract };
+const getResponseTags = (response: { type: string; text: string }[]) => {
+  return (
+    response[0]?.text?.split("<Response>")[1]?.split("</Response>")[0] ?? ""
+  );
+};
+
+const getCaluseTags = (response: { type: string; text: string }[]) => {
+  return response[0]?.text?.split("<Clause>")[1]?.split("</Clause>")[0] ?? "";
+};
+
+export {
+  generateContract,
+  getBedrockResponse,
+  getCaluseTags,
+  getInnerResponse,
+  getResponseTags,
+  readContract,
+};

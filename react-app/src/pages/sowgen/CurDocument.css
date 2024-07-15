@@ -16,6 +16,6 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-.test-add-button {
-  padding: 2rem;
+.doc-bottom-buttons {
+  margin: 1rem;
 }

@@ -4,18 +4,20 @@ import "./CurDocument.css";
 const CurDocument = ({
   document,
   setDocument,
+  documentTitle,
 }: {
   document: { title: string; content: string }[];
   setDocument: (document: { title: string; content: string }[]) => void;
+  documentTitle: string | null;
 }) => {
-  // test press no longer needed
-  const onTestPress = () => {
-    setDocument([...document, { title: "Test", content: "Test Content" }]);
-  };
-
   const handleExport = () => {
-    // name it not test
-    createDocument("test", document);
+    if (!documentTitle) {
+      const title = `ScopeOfWork${new Date().getTime()}`;
+      createDocument(title, document);
+      return;
+    }
+
+    createDocument(documentTitle, document);
   };
 
   return (
@@ -39,11 +41,6 @@ const CurDocument = ({
             </div>
           </div>
         ))}
-        <div className="test-add-button">
-          <button onClick={onTestPress} className="button">
-            Add Test Clause
-          </button>
-        </div>
       </div>
       <div className="doc-bottom-buttons">
         <button onClick={handleExport} className="button">

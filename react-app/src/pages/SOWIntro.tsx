@@ -4,6 +4,7 @@ import "./SOWIntro.css";
 
 const SOWIntro = () => {
   const navigate = useNavigate();
+  const [documentTitle, setDocumentTitle] = useState("");
   const [userInstitution, setUserInstitution] = useState("");
   const [hiringInstitution, setHiringInstitution] = useState("");
   const [scopeOfWork, setScopeOfWork] = useState("");
@@ -14,7 +15,9 @@ const SOWIntro = () => {
         userInstitution
       )}&hiringInstitution=${encodeURIComponent(
         hiringInstitution
-      )}&scopeOfWork=${encodeURIComponent(scopeOfWork)}`
+      )}&scopeOfWork=${encodeURIComponent(
+        scopeOfWork
+      )}&documentTitle=${encodeURIComponent(documentTitle)}`
     );
   };
 
@@ -24,6 +27,15 @@ const SOWIntro = () => {
         <h2>Scope of Work Generator Introduction</h2>
       </div>
       <div className="intro-container">
+        <div className="input-group">
+          <label htmlFor="documentTitle">Document Title:</label>
+          <input
+            type="text"
+            id="documentTitle"
+            value={documentTitle}
+            onChange={(e) => setDocumentTitle(e.target.value)}
+          />
+        </div>
         <div className="input-group">
           <label htmlFor="userInstitution">Your Institution:</label>
           <input

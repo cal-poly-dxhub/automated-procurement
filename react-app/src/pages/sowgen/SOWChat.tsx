@@ -1,35 +1,37 @@
 import { useState } from "react";
-import { getBedrockResponse, getInnerResponse } from "../../scripts/LLMGeneral";
+import {
+  getBedrockResponse,
+  getCaluseTags,
+  getResponseTags,
+} from "../../scripts/LLMGeneral";
 import "./SOWChat.css";
 
 const SOWGen = ({
-  messages,
-  setMessages,
   loading,
   setLoading,
-  context,
-  setContext,
+  contexts,
+  setContexts,
   setAccepted,
   currentClause,
   setCurrentClause,
 }: {
-  // this needs work oh my
-  messages: { role: string; content: { type: string; text: string }[] }[];
-  setMessages: (
-    messages: { role: string; content: { type: string; text: string }[] }[]
-  ) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  context: { role: string; content: { type: string; text: string }[] }[];
-  setContext: (
-    context: { role: string; content: { type: string; text: string }[] }[]
+  contexts: {
+    title: string;
+    context: { role: string; content: { type: string; text: string }[] }[];
+  }[];
+  setContexts: (
+    contexts: {
+      title: string;
+      context: { role: string; content: { type: string; text: string }[] }[];
+    }[]
   ) => void;
   setAccepted: (accepted: boolean) => void;
   currentClause: { title: string; clause: string };
   setCurrentClause: (currentClause: { title: string; clause: string }) => void;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [showContext, setShowContext] = useState<boolean>(false);
   const [clausePopup, setClausePopup] = useState<boolean>(false);
 
   const handleInputChange = (e: any) => {
@@ -44,45 +46,80 @@ const SOWGen = ({
     const ui = inputValue;
     setInputValue("");
 
-    const newMessage = {
-      role: "user",
-      content: [{ type: "text", text: ui }],
+    const oldContext = contexts.find(
+      (c) => c.title === currentClause.title
+    ) ?? {
+      title: currentClause.title,
+      context: [],
     };
-
-    const allMessages = [...messages, newMessage];
-    setMessages(allMessages);
-
     const newContext = [
-      ...context,
+      ...oldContext.context,
       { role: "user", content: [{ type: "text", text: ui }] },
     ];
-    setContext(newContext);
+    const newContexts = [
+      ...contexts.filter((c) => c.title !== currentClause.title),
+      { title: currentClause.title, context: newContext },
+    ];
+
+    setContexts(newContexts);
+
     setLoading(true);
     const r = await getBedrockResponse(newContext);
-    const m = getInnerResponse(r);
-    const messageR = m.response;
-    const messageC = m.clause;
+    const finishedClause = getCaluseTags(r);
 
-    if (messageC) {
-      setCurrentClause({ title: "title placeholder", clause: messageC });
+    if (finishedClause) {
+      setCurrentClause({ title: currentClause.title, clause: finishedClause });
       setClausePopup(true);
     }
 
-    setMessages([
-      ...allMessages,
-      {
-        role: "assistant",
-        content: [
-          {
-            type: "text",
-            text: messageR,
-          },
-        ],
-      },
-    ]);
     newContext.push({ role: "assistant", content: r });
-    setContext(newContext);
+    setContexts(newContexts);
+
     setLoading(false);
+  };
+
+  const getMessages = () => {
+    const currentContext = contexts.find(
+      (c) => c.title === currentClause.title
+    )?.context;
+
+    if (!currentContext) {
+      return [];
+    }
+
+    return currentContext.map((message, index) => {
+      if (message.role === "assistant") {
+        return (
+          <div key={index} className="message assistant">
+            {getResponseTags(message.content)}
+          </div>
+        );
+      }
+
+      if (
+        message.role === "user" &&
+        message.content[0].text.includes(
+          "You are LUCAS, a procurement manager assistant specialized in creating scope of work documents."
+        )
+      ) {
+        return (
+          <div key={index} className="message user">
+            Start working on {currentClause.title}
+          </div>
+        );
+      }
+
+      return (
+        <div
+          key={index}
+          className={`message ${
+            message.role === "user" ? "user" : "assistant"
+          }`}
+        >
+          {message?.content[0]?.text}
+        </div>
+      );
+    });
   };
 
   return (
@@ -92,16 +129,7 @@ const SOWGen = ({
       </div>
       <div className="contract-gen">
         <div className="message-container">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`message ${
-                message.role === "user" ? "user" : "assistant"
-              }`}
-            >
-              {message?.content[0]?.text}
-            </div>
-          ))}
+          {getMessages()}
           {loading && <div className="message assistant">Loading...</div>}
           {clausePopup && (
             <div className="clause-popup-background">
@@ -144,13 +172,15 @@ const SOWGen = ({
             }}
           />
           <button onClick={handleSendMessage}>Send</button>
-          <button onClick={() => setMessages([])}>Clear</button>
-          <button onClick={() => setShowContext(!showContext)}>
-            {showContext ? "Hide" : "Show"} Context
+          <button
+            onClick={() => {
+              console.log(contexts);
+            }}
+          >
+            Log Context
           </button>
         </div>
       </div>
-      {showContext && <div>{JSON.stringify(context)}</div>}
     </div>
   );
 };

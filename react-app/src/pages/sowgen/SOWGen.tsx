@@ -6,7 +6,7 @@ import "./SOWGen.css";
 import Navbar from "../../components/Navbar";
 
 import prompts from "../../assets/prompt.json";
-import { getBedrockResponse, getInnerResponse } from "../../scripts/LLMGeneral";
+import { getBedrockResponse } from "../../scripts/LLMGeneral";
 import ALaCarte from "./ALaCarte";
 import CurDocument from "./CurDocument";
 import SOWChat from "./SOWChat";
@@ -16,22 +16,22 @@ const SOWGen = () => {
   const [searchParams] = useSearchParams();
 
   // from params
+  const documentTitle = searchParams.get("documentTitle");
   const userInstitution = searchParams.get("userInstitution");
   const hiringInstitution = searchParams.get("hiringInstitution");
   const scopeOfWork = searchParams.get("scopeOfWork");
 
   // for sowgen
-  const [messages, setMessages] = useState<
-    { role: string; content: { type: string; text: string }[] }[]
-  >([]);
-  const [context, setContext] = useState<
+  const [loading, setLoading] = useState<boolean>(false);
+  const [contexts, setContexts] = useState<
     {
-      role: string;
-      content: { type: string; text: string }[];
+      title: string;
+      context: {
+        role: string;
+        content: { type: string; text: string }[];
+      }[];
     }[]
   >([]);
-
-  const [loading, setLoading] = useState<boolean>(false);
 
   // for curdocument
   const [accepted, setAccepted] = useState<boolean>(false);
@@ -50,9 +50,7 @@ const SOWGen = () => {
   >([]);
 
   const handleAddClause = async (clause: { title: string; clause: string }) => {
-    // add to prompt later
-    // <Document>If you are finished completing the document, please write the finished document here. Otherwise leave this blank.</Document>
-
+    setCurrentClause(clause);
     const newPrompt = sow_prompt
       .replace("--CLAUSE--", clause.clause.toString())
       .replace(
@@ -65,44 +63,27 @@ const SOWGen = () => {
       )
       .replace("--PURPOSE--", scopeOfWork?.toString() ?? "(purpose not given)");
 
-    const newMessage = {
-      role: "user",
-      content: [{ type: "text", text: `Add clause: ${clause.title}` }],
-    };
-    const allMessages = [...messages, newMessage];
-
-    setMessages(allMessages);
-
     const newContext = [
-      ...context,
-      { role: "user", content: [{ type: "text", text: newPrompt }] },
-    ];
-    setContext(newContext);
-
-    setLoading(true);
-    const r = await getBedrockResponse(newContext);
-    const m = getInnerResponse(r);
-    const messageR = m.response;
-    const messageC = m.clause;
-
-    if (messageC) {
-      alert("(SOWGEN) Add clause: " + messageC);
-    }
-
-    setMessages([
-      ...allMessages,
+      ...contexts,
       {
-        role: "assistant",
-        content: [
-          {
-            type: "text",
-            text: messageR,
-          },
+        title: clause.title,
+        context: [
+          { role: "user", content: [{ type: "text", text: newPrompt }] },
         ],
       },
-    ]);
-    newContext.push({ role: "assistant", content: r });
-    setContext(newContext);
+    ];
+
+    setContexts(newContext);
+
+    setLoading(true);
+    const r = await getBedrockResponse(
+      newContext.find((c) => c.title === clause.title)?.context ?? []
+    );
+
+    newContext
+      .find((c) => c.title === clause.title)
+      ?.context.push({ role: "assistant", content: r });
+    setContexts(newContext);
     setLoading(false);
   };
 
@@ -112,13 +93,10 @@ const SOWGen = () => {
       return;
     }
 
-    alert("Accepted");
-
-    // add latest clause to document
     const newDocument = [
       ...document,
       {
-        title: "title placeholder",
+        title: currentClause.title,
         content: currentClause.clause,
       },
     ];
@@ -134,21 +112,23 @@ const SOWGen = () => {
       <div className="sow-tri-container">
         <ALaCarte
           clauses={SOW}
-          currentClause={undefined}
+          currentClause={currentClause}
           handleAddClause={handleAddClause}
         />
         <SOWChat
-          messages={messages}
-          setMessages={setMessages}
           loading={loading}
           setLoading={setLoading}
-          context={context}
-          setContext={setContext}
+          contexts={contexts}
+          setContexts={setContexts}
           setAccepted={setAccepted}
           currentClause={currentClause}
           setCurrentClause={setCurrentClause}
         />
-        <CurDocument document={document} setDocument={setDocument} />
+        <CurDocument
+          document={document}
+          setDocument={setDocument}
+          documentTitle={documentTitle}
+        />
       </div>
     </div>
   );

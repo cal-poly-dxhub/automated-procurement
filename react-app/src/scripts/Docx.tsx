@@ -1,7 +1,7 @@
 import { Document, Packer, Paragraph, TextRun } from "docx";
 
 const createDocument = (
-  filepath: string,
+  title: string,
   clauses: { title: string; content: string }[]
 ) => {
   const doc = new Document({
@@ -12,8 +12,7 @@ const createDocument = (
           new Paragraph({
             children: [
               new TextRun({
-                // this should be imported eventually
-                text: "Scope of Work\n",
+                text: title + "\n",
                 bold: true,
                 size: 32,
                 font: "Arial",
@@ -45,7 +44,7 @@ const createDocument = (
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = filepath;
+    a.download = title + ".docx";
     a.click();
     window.URL.revokeObjectURL(url);
   });
