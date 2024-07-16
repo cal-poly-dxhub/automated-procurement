@@ -4,6 +4,7 @@
   width: 28vw;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
 }
 
 .doc-item {
