@@ -22,6 +22,12 @@ const SOWGen = () => {
   const scopeOfWork = searchParams.get("scopeOfWork");
 
   // for sowgen
+  const [SOWTemplates, setSOWTemplates] = useState<
+    {
+      title: string;
+      clause: string;
+    }[]
+  >(SOW);
   const [loading, setLoading] = useState<boolean>(false);
   const [contexts, setContexts] = useState<
     {
@@ -123,7 +129,8 @@ const SOWGen = () => {
       <Navbar />
       <div className="sow-tri-container">
         <ALaCarte
-          clauses={SOW}
+          templates={SOWTemplates}
+          setTemplates={setSOWTemplates}
           currentClause={currentClause}
           handleAddClause={handleAddClause}
         />

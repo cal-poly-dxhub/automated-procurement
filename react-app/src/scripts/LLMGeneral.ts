@@ -160,11 +160,26 @@ const getCaluseTags = (response: { type: string; text: string }[]) => {
   return response[0]?.text?.split("<Clause>")[1]?.split("</Clause>")[0] ?? "";
 };
 
+const getTitleTags = (response: { type: string; text: string }[]) => {
+  return response[0]?.text?.split("<Title>")[1]?.split("</Title>")[0] ?? "";
+};
+
+const getNumberTags = (
+  number: number,
+  response: { type: string; text: string }[]
+) => {
+  return (
+    response[0]?.text?.split(`<${number}>`)[1]?.split(`</${number}>`)[0] ?? ""
+  );
+};
+
 export {
   generateContract,
   getBedrockResponse,
   getCaluseTags,
   getInnerResponse,
+  getNumberTags,
   getResponseTags,
+  getTitleTags,
   readContract,
 };

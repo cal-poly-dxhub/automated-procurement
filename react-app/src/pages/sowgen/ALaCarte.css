@@ -38,3 +38,35 @@
 .clause-selected:last-child {
   border-bottom: none;
 }
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.35);
+  width: 100vw;
+  height: 100vh;
+}
+
+.modal-box {
+  background-color: var(--background-color);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-input {
+  width: 30vw;
+  padding: 8px;
+  margin-bottom: 15px;
+}
