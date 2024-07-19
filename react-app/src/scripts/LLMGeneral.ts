@@ -160,6 +160,10 @@ const getCaluseTags = (response: { type: string; text: string }[]) => {
   return response[0]?.text?.split("<Clause>")[1]?.split("</Clause>")[0] ?? "";
 };
 
+const getSummaryTags = (response: { type: string; text: string }[]) => {
+  return response[0]?.text?.split("<Summary>")[1]?.split("</Summary>")[0] ?? "";
+};
+
 const getTitleTags = (response: { type: string; text: string }[]) => {
   return response[0]?.text?.split("<Title>")[1]?.split("</Title>")[0] ?? "";
 };
@@ -180,6 +184,7 @@ export {
   getInnerResponse,
   getNumberTags,
   getResponseTags,
+  getSummaryTags,
   getTitleTags,
   readContract,
 };

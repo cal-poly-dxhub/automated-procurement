@@ -6,15 +6,15 @@ const SOWIntro = () => {
   const navigate = useNavigate();
   const [documentTitle, setDocumentTitle] = useState("");
   const [userInstitution, setUserInstitution] = useState("");
-  const [hiringInstitution, setHiringInstitution] = useState("");
+  const [supplier, setSupplier] = useState("");
   const [scopeOfWork, setScopeOfWork] = useState("");
 
   const handleSubmit = () => {
     navigate(
       `/sow-gen?userInstitution=${encodeURIComponent(
         userInstitution
-      )}&hiringInstitution=${encodeURIComponent(
-        hiringInstitution
+      )}&supplier=${encodeURIComponent(
+        supplier
       )}&scopeOfWork=${encodeURIComponent(
         scopeOfWork
       )}&documentTitle=${encodeURIComponent(documentTitle)}`
@@ -46,11 +46,11 @@ const SOWIntro = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="hiringInstitution">Institution You're Hiring:</label>
+          <label htmlFor="hiringInstitution">Supplier You're Hiring:</label>
           <input
-            id="hiringInstitution"
-            value={hiringInstitution}
-            onChange={(e) => setHiringInstitution(e.target.value)}
+            id="supplier"
+            value={supplier}
+            onChange={(e) => setSupplier(e.target.value)}
           />
         </div>
         <div className="input-group">

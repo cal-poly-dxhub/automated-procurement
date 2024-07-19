@@ -22,8 +22,6 @@ const CurDocument = ({
   setCurrentClause: (currentClause: { title: string; clause: string }) => void;
 }) => {
   const handleExport = async () => {
-    // first send document to llm and get back the final document
-    // then export the final document
     const message = sow_finalize + document.map((doc) => doc.content).join(" ");
     const context = {
       role: "user",

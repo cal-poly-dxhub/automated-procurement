@@ -18,7 +18,7 @@ const SOWGen = () => {
   // from params
   const documentTitle = searchParams.get("documentTitle");
   const userInstitution = searchParams.get("userInstitution");
-  const hiringInstitution = searchParams.get("hiringInstitution");
+  const supplier = searchParams.get("supplier");
   const scopeOfWork = searchParams.get("scopeOfWork");
 
   // for sowgen
@@ -52,6 +52,7 @@ const SOWGen = () => {
     | {
         title: string;
         content: string;
+        // <Summary>This will contain a brief summary of the information in the finished clause. Only use this tag when you are ready to present the final clause to the user.</Summary>
       }[]
   >([]);
 
@@ -63,11 +64,12 @@ const SOWGen = () => {
         "--INSTITUTION--",
         userInstitution?.toString() ?? "(institution not given)"
       )
+      .replace("--SUPPLIER--", supplier?.toString() ?? "(supplier not given)")
+      .replace("--PURPOSE--", scopeOfWork?.toString() ?? "(purpose not given)")
       .replace(
-        "--HIRED_INSTITUTION--",
-        hiringInstitution?.toString() ?? "(institution not given)"
-      )
-      .replace("--PURPOSE--", scopeOfWork?.toString() ?? "(purpose not given)");
+        "--EXISTING_CLAUSES--",
+        document.map((doc) => doc.content).join(" ")
+      );
 
     const newContext = [
       ...contexts,
@@ -142,6 +144,7 @@ const SOWGen = () => {
           setAccepted={setAccepted}
           currentClause={currentClause}
           setCurrentClause={setCurrentClause}
+          document={document}
         />
         <CurDocument
           document={document}

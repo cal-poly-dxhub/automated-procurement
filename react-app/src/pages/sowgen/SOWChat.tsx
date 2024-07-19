@@ -14,6 +14,7 @@ const SOWGen = ({
   setAccepted,
   currentClause,
   setCurrentClause,
+  document,
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
@@ -30,6 +31,7 @@ const SOWGen = ({
   setAccepted: (accepted: boolean) => void;
   currentClause: { title: string; clause: string };
   setCurrentClause: (currentClause: { title: string; clause: string }) => void;
+  document: { title: string; content: string }[];
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [clausePopup, setClausePopup] = useState<boolean>(false);
@@ -107,7 +109,7 @@ const SOWGen = ({
       if (
         message.role === "user" &&
         message.content[0].text.includes(
-          "You are LUCAS, a procurement manager assistant specialized in creating scope of work documents."
+          "You are LUCAS, a procurement manager assistant specialized in creating scope of work"
         )
       ) {
         return (
