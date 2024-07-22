@@ -1,0 +1,68 @@
+.intro-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: calc(
+    100vh - 60px
+  ); /* Adjust the height based on your navbar height */
+  padding: 20px;
+  background-color: var(--background-color);
+}
+
+.intro-page-title {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.intro-form-container {
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  background-color: var(--form-background-color);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+}
+
+.input-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  background-color: var(--hover-color);
+}

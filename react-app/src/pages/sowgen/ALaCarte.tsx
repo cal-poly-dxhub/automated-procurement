@@ -1,19 +1,17 @@
 import { useState } from "react";
+import json from "../../assets/SOWCategories.json";
 import "./ALaCarte.css";
 
 const ALaCarte = ({
-  templates,
-  setTemplates,
+  currentCategory,
   currentClause,
   handleAddClause,
+  document,
 }: {
-  templates: {
-    title: string;
-    clause: string;
-  }[];
-  setTemplates: (templates: { title: string; clause: string }[]) => void;
+  currentCategory: string;
   currentClause: { title: string; clause: string };
   handleAddClause: (clause: any) => void;
+  document: { title: string; content: string }[];
 }) => {
   const [customModal, setCustomModal] = useState<boolean>(false);
   const [customTemplate, setCustomTemplate] = useState<{
@@ -24,36 +22,93 @@ const ALaCarte = ({
     clause: "",
   });
 
+  const templates = json.Clauses.filter(
+    (clause) => clause.category === currentCategory || clause.category === "All"
+  );
+
+  const [customTemplates, setCustomTemplates] = useState<
+    { title: string; clause: string }[]
+  >([]);
+
+  const handleAddCustomClause = () => {
+    setCustomTemplates([...customTemplates, customTemplate]);
+    setCustomTemplate({ title: "", clause: "" });
+    setCustomModal(false);
+  };
+
+  const getClassName = (clause: any) => {
+    if (currentClause.title === clause.title) {
+      return "clause-selected";
+    } else if (document.find((doc) => doc.title === clause.title)) {
+      return "clause-included";
+    }
+
+    return "clause-item";
+  };
+
   return (
     <div className="a-la-carte">
       <h1>Add Clauses</h1>
       <div className="clauses">
         {templates.map((clause, index) => {
-          const selected = currentClause.title === clause.title;
-
           return (
-            <div
-              key={index}
-              className={selected ? "clause-selected" : "clause-item"}
-            >
-              <span>{clause.title}</span>
-              <button
-                className="button"
-                disabled={selected}
-                onClick={() => {
-                  handleAddClause(clause);
-                }}
-              >
-                Add Clause
-              </button>
+            <div key={index} className="clause-category">
+              <h2>{clause.category}</h2>
+              <div className="clauses">
+                {clause.clauses.map((clause, index) => {
+                  const selected = currentClause.title === clause.title;
+                  const inDocument = document.find(
+                    (doc) => doc.title === clause.title
+                  )
+                    ? true
+                    : false;
+                  return (
+                    <div key={index} className={getClassName(clause)}>
+                      <span>{clause.title}</span>
+                      <button
+                        className="button"
+                        disabled={selected || inDocument}
+                        onClick={() => {
+                          handleAddClause(clause);
+                        }}
+                      >
+                        Add Clause
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           );
         })}
-        <div className="clause-item">
-          <span>Custom Clause</span>
-          <button className="button" onClick={() => setCustomModal(true)}>
-            Add Clause
-          </button>
+        <div className="clause-category">
+          <h2>Custom Clauses</h2>
+          {customTemplates.map((clause, index) => {
+            const selected = currentClause.title === clause.title;
+            const inDocument = document.find(
+              (doc) => doc.title === clause.title
+            )
+              ? true
+              : false;
+            return (
+              <div key={index} className={getClassName(clause)}>
+                <span>{clause.title}</span>
+                <button
+                  className="button"
+                  onClick={() => handleAddClause(clause)}
+                  disabled={selected || inDocument}
+                >
+                  Add Clause
+                </button>
+              </div>
+            );
+          })}
+          <div className="clause-item">
+            <span>Custom Clause</span>
+            <button className="button" onClick={() => setCustomModal(true)}>
+              Add Clause
+            </button>
+          </div>
         </div>
       </div>
       {customModal && (
@@ -82,17 +137,10 @@ const ALaCarte = ({
                   });
                 }}
                 className="input modal-input"
-              ></textarea>
+              />
             </div>
             <div className="modal-buttons">
-              <button
-                className="button"
-                onClick={() => {
-                  setTemplates([...templates, customTemplate]);
-                  setCustomTemplate({ title: "", clause: "" });
-                  setCustomModal(false);
-                }}
-              >
+              <button className="button" onClick={handleAddCustomClause}>
                 Add Clause
               </button>
               <button

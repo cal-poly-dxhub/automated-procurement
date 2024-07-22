@@ -1,33 +1,31 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import SOW from "../../assets/SOW.json";
 import "./SOWGen.css";
 
 import Navbar from "../../components/Navbar";
 
-import prompts from "../../assets/prompt.json";
 import { getBedrockResponse } from "../../scripts/LLMGeneral";
 import ALaCarte from "./ALaCarte";
 import CurDocument from "./CurDocument";
 import SOWChat from "./SOWChat";
+
+import prompts from "../../assets/prompt.json";
+import templates from "../../assets/SOWCategories.json";
 const sow_prompt = prompts["sow_prompt"];
+const ScopeOfWork = templates.Clauses.find(
+  (clause) => clause.category === "All"
+)?.clauses.find((clause) => clause.title === "Scope of Work");
 
 const SOWGen = () => {
   const [searchParams] = useSearchParams();
 
   // from params
-  const documentTitle = searchParams.get("documentTitle");
+  const category = searchParams.get("category");
   const userInstitution = searchParams.get("userInstitution");
   const supplier = searchParams.get("supplier");
-  const scopeOfWork = searchParams.get("scopeOfWork");
+  const documentPurpose = searchParams.get("documentPurpose");
 
   // for sowgen
-  const [SOWTemplates, setSOWTemplates] = useState<
-    {
-      title: string;
-      clause: string;
-    }[]
-  >(SOW);
   const [loading, setLoading] = useState<boolean>(false);
   const [contexts, setContexts] = useState<
     {
@@ -59,16 +57,25 @@ const SOWGen = () => {
   const handleAddClause = async (clause: { title: string; clause: string }) => {
     setCurrentClause(clause);
     const newPrompt = sow_prompt
-      .replace("--CLAUSE--", clause.clause.toString())
-      .replace(
+      .replaceAll("--CLAUSE--", clause.clause.toString())
+      .replaceAll(
         "--INSTITUTION--",
         userInstitution?.toString() ?? "(institution not given)"
       )
-      .replace("--SUPPLIER--", supplier?.toString() ?? "(supplier not given)")
-      .replace("--PURPOSE--", scopeOfWork?.toString() ?? "(purpose not given)")
-      .replace(
-        "--EXISTING_CLAUSES--",
-        document.map((doc) => doc.content).join(" ")
+      .replaceAll(
+        "--SUPPLIER--",
+        supplier?.toString() ?? "(supplier not given)"
+      )
+      .replaceAll(
+        "--PURPOSE--",
+        category?.toString() + ", " + documentPurpose?.toString()
+      )
+      // replace --SCOPE-- with the content of the Scope of Work clause
+      .replaceAll(
+        "--SCOPE--",
+        document
+          .find((doc) => doc.title === "Scope of Work")
+          ?.content.toString() ?? "" // TODO: ????????????? hah?
       );
 
     const newContext = [
@@ -126,15 +133,24 @@ const SOWGen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accepted]);
 
+  // auto select Scope of Work clause
+  useEffect(() => {
+    if (currentClause.title === "" && ScopeOfWork) {
+      handleAddClause(ScopeOfWork);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <Navbar />
       <div className="sow-tri-container">
         <ALaCarte
-          templates={SOWTemplates}
-          setTemplates={setSOWTemplates}
+          currentCategory="Technology"
           currentClause={currentClause}
           handleAddClause={handleAddClause}
+          document={document}
         />
         <SOWChat
           loading={loading}
@@ -149,7 +165,7 @@ const SOWGen = () => {
         <CurDocument
           document={document}
           setDocument={setDocument}
-          documentTitle={documentTitle}
+          documentTitle={category + " Scope of Work"}
           setCurrentClause={setCurrentClause}
         />
       </div>
