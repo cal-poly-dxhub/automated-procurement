@@ -15,7 +15,7 @@ const Landing = () => {
                 Scope of Work Generator
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="/contract-gen" className="button">
                 Contract Generator
               </a>
@@ -23,6 +23,11 @@ const Landing = () => {
             <li>
               <a href="/contract-read" className="button">
                 Contract Reader
+              </a>
+            </li> */}
+            <li>
+              <a href="/amend-clause" className="button">
+                Amend Clause
               </a>
             </li>
           </ul>

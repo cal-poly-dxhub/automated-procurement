@@ -15,6 +15,7 @@ const SOWGen = ({
   currentClause,
   setCurrentClause,
   document,
+  title = "Scope of Work Generator",
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
@@ -32,6 +33,7 @@ const SOWGen = ({
   currentClause: { title: string; clause: string };
   setCurrentClause: (currentClause: { title: string; clause: string }) => void;
   document: { title: string; content: string }[];
+  title?: string;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [clausePopup, setClausePopup] = useState<boolean>(false);
@@ -135,7 +137,7 @@ const SOWGen = ({
   return (
     <div className="sow-container">
       <div className="chat-box-title">
-        <h2>Scope of Work Generator Chat</h2>
+        <h2>{title}</h2>
       </div>
       <div className="contract-gen">
         <div className="message-container">

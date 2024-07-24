@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
+import AmendClause from "./pages/amend/AmendClause";
 import ContractGen from "./pages/ContractGen";
 import ContractRead from "./pages/ContractRead";
 import Landing from "./pages/Landing";
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/sow-intro" element={<IntroPage />} />
         <Route path="/sow-gen" element={<SOWGen />} />
         <Route path="/sow-readthrough" element={<SOWReadthrough />} />
+        <Route path="/amend-clause" element={<AmendClause />} />
       </Routes>
     </Router>
   );

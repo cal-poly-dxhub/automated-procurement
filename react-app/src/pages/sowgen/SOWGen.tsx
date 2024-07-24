@@ -25,7 +25,7 @@ const SOWGen = () => {
   const supplier = searchParams.get("supplier");
   const documentPurpose = searchParams.get("documentPurpose");
 
-  // for sowgen
+  // for sowchat
   const [loading, setLoading] = useState<boolean>(false);
   const [contexts, setContexts] = useState<
     {
