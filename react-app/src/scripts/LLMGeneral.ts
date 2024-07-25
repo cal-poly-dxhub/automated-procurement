@@ -139,6 +139,12 @@ const getBedrockResponse = async (
   }
 };
 
+const getIncrementalContext = (d: { title: string; content: string }[]) => {
+  const summaries = d.map((doc) => doc.content);
+  const joinedSummaries = summaries.join("\n");
+  return `\n\nHere is a running summary of what the document currently contains: <DocumentContext>${joinedSummaries}</DocumentContext>`;
+};
+
 // shouldnt return clause, need separate function for that
 const getInnerResponse = (response: { type: string; text: string }[]) => {
   return {
@@ -181,6 +187,7 @@ export {
   generateContract,
   getBedrockResponse,
   getCaluseTags,
+  getIncrementalContext,
   getInnerResponse,
   getNumberTags,
   getResponseTags,

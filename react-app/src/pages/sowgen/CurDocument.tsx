@@ -16,10 +16,16 @@ const CurDocument = ({
   documentTitle,
   setCurrentClause,
 }: {
-  document: { title: string; content: string }[];
-  setDocument: (document: { title: string; content: string }[]) => void;
+  document: { title: string; content: string; summary: string }[];
+  setDocument: (
+    document: { title: string; content: string; summary: string }[]
+  ) => void;
   documentTitle: string | null;
-  setCurrentClause: (currentClause: { title: string; clause: string }) => void;
+  setCurrentClause: (currentClause: {
+    title: string;
+    clause: string;
+    summary: string;
+  }) => void;
 }) => {
   const handleExport = async () => {
     const message = sow_finalize + document.map((doc) => doc.content).join(" ");
@@ -65,7 +71,11 @@ const CurDocument = ({
             <div className="doc-buttons">
               <button
                 onClick={() => {
-                  setCurrentClause({ title: doc.title, clause: doc.content });
+                  setCurrentClause({
+                    title: doc.title,
+                    clause: doc.content,
+                    summary: "",
+                  });
                 }}
                 className="button"
               >
@@ -86,6 +96,9 @@ const CurDocument = ({
       <div className="doc-bottom-buttons">
         <button className="button" onClick={handleExport}>
           Export Document
+        </button>
+        <button className="button" onClick={() => console.log(document)}>
+          Log Document
         </button>
       </div>
     </div>

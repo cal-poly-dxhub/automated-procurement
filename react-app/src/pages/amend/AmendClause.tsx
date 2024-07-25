@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import SOWChat from "../sowgen/SOWChat";
 import "./AmendClause.css";
 import AmendInput from "./AmendInput";
 
@@ -12,21 +11,23 @@ import {
   getNumberTags,
   getTitleTags,
 } from "../../scripts/LLMGeneral";
+import AmendChat from "./AmendChat";
 const initial_prompt = j["amend_clause"];
 const finalize_prompt = j["amend_finalize"];
 
 const AmendClause = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [accepted, setAccepted] = useState<boolean>(false);
-  const [contexts, setContexts] = useState<
-    {
-      title: string;
-      context: {
-        role: string;
-        content: { type: string; text: string }[];
-      }[];
-    }[]
-  >([]);
+  const [context, setContext] = useState<{
+    title: string;
+    context: {
+      role: string;
+      content: { type: string; text: string }[];
+    }[];
+  }>({
+    title: "",
+    context: [],
+  });
   const [currentClause, setCurrentClause] = useState<{
     title: string;
     clause: string;
@@ -48,27 +49,20 @@ const AmendClause = () => {
         currentClause.title + " " + currentClause.clause.toString()
       );
 
-      const newContext = [
-        ...contexts,
-        {
-          title: currentClause.title,
-          context: [
-            { role: "user", content: [{ type: "text", text: newPrompt }] },
-          ],
-        },
-      ];
+      const newContext = {
+        title: currentClause.title,
+        context: [
+          { role: "user", content: [{ type: "text", text: newPrompt }] },
+        ],
+      };
 
-      setContexts(newContext);
+      setContext(newContext);
 
       setLoading(true);
-      const r = await getBedrockResponse(
-        newContext.find((c) => c.title === currentClause.title)?.context ?? []
-      );
+      const r = await getBedrockResponse(newContext.context ?? []);
 
-      newContext
-        .find((c) => c.title === currentClause.title)
-        ?.context.push({ role: "assistant", content: r });
-      setContexts(newContext);
+      newContext.context.push({ role: "assistant", content: r });
+      setContext(newContext);
       setLoading(false);
     };
 
@@ -109,11 +103,10 @@ const AmendClause = () => {
     };
 
     if (accepted) {
-      const context = contexts.find(
-        (c) => c.title === currentClause.title
-      )?.context;
       if (context) {
-        const response = context[context.length - 2].content ?? ""; // -2 here bc its adding another response for some reason
+        console.log("context:", context);
+        const response =
+          context.context[context.context.length - 2].content ?? ""; // -2 here
         const clause = getCaluseTags(response);
         const doc = [
           {
@@ -137,16 +130,15 @@ const AmendClause = () => {
       <Navbar />
       <div className="horizontal">
         <AmendInput setClause={setCurrentClause} />
-        <SOWChat
+        <AmendChat
           loading={loading}
           setLoading={setLoading}
-          contexts={contexts}
-          setContexts={setContexts}
+          context={context}
+          setContext={setContext}
           setAccepted={setAccepted}
-          currentClause={currentClause}
+          currentClause={{ ...currentClause, summary: "" }}
           setCurrentClause={setCurrentClause}
           document={document}
-          title={"Amend Clause"}
         />
       </div>
     </div>

@@ -6,13 +6,13 @@ import {
   getResponseTags,
   getSummaryTags,
 } from "../../scripts/LLMGeneral";
-import "./SOWChat.css";
+import "./AmendChat.css";
 
-const SOWChat = ({
+const AmendChat = ({
   loading,
   setLoading,
-  contexts,
-  setContexts,
+  context,
+  setContext,
   setAccepted,
   currentClause,
   setCurrentClause,
@@ -20,16 +20,14 @@ const SOWChat = ({
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  contexts: {
+  context: {
     title: string;
     context: { role: string; content: { type: string; text: string }[] }[];
-  }[];
-  setContexts: (
-    contexts: {
-      title: string;
-      context: { role: string; content: { type: string; text: string }[] }[];
-    }[]
-  ) => void;
+  };
+  setContext: (context: {
+    title: string;
+    context: { role: string; content: { type: string; text: string }[] }[];
+  }) => void;
   setAccepted: (accepted: boolean) => void;
   currentClause: { title: string; clause: string; summary: string };
   setCurrentClause: (currentClause: {
@@ -55,12 +53,7 @@ const SOWChat = ({
     const ui = inputValue;
     setInputValue("");
 
-    const oldContext = contexts.find(
-      (c) => c.title === currentClause.title
-    ) ?? {
-      title: currentClause.title,
-      context: [],
-    };
+    const oldContext = context;
 
     const incrementalContext = getIncrementalContext(document);
     if (oldContext.context.length > 0) {
@@ -71,12 +64,8 @@ const SOWChat = ({
       ...oldContext.context,
       { role: "user", content: [{ type: "text", text: ui }] },
     ];
-    const newContexts = [
-      ...contexts.filter((c) => c.title !== currentClause.title),
-      { title: currentClause.title, context: newContext },
-    ];
-
-    setContexts(newContexts);
+    const newContexts = { title: currentClause.title, context: newContext };
+    setContext(newContexts);
 
     setLoading(true);
     const r = await getBedrockResponse(newContext);
@@ -93,15 +82,14 @@ const SOWChat = ({
     }
 
     newContext.push({ role: "assistant", content: r });
-    setContexts(newContexts);
+    const finalContexts = { title: currentClause.title, context: newContext };
+    setContext(finalContexts);
 
     setLoading(false);
   };
 
   const getMessages = () => {
-    const currentContext = contexts.find(
-      (c) => c.title === currentClause.title
-    )?.context;
+    const currentContext = context.context;
 
     if (!currentContext) {
       return [];
@@ -202,7 +190,7 @@ const SOWChat = ({
           <button onClick={handleSendMessage}>Send</button>
           <button
             onClick={() => {
-              console.log(contexts);
+              console.log("amendchat context", context);
             }}
           >
             Log Context
@@ -213,4 +201,4 @@ const SOWChat = ({
   );
 };
 
-export default SOWChat;
+export default AmendChat;

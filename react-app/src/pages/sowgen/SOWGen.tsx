@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./SOWGen.css";
 
 import Navbar from "../../components/Navbar";
 
-import { getBedrockResponse } from "../../scripts/LLMGeneral";
+import {
+  getBedrockResponse,
+  getIncrementalContext,
+} from "../../scripts/LLMGeneral";
 import ALaCarte from "./ALaCarte";
 import CurDocument from "./CurDocument";
 import SOWChat from "./SOWChat";
@@ -42,20 +45,29 @@ const SOWGen = () => {
   const [currentClause, setCurrentClause] = useState<{
     title: string;
     clause: string;
+    summary: string;
   }>({
     title: "",
     clause: "",
+    summary: "",
   });
+  const clauseRef = useRef<string>("");
   const [document, setDocument] = useState<
-    | {
-        title: string;
-        content: string;
-        // <Summary>This will contain a brief summary of the information in the finished clause. Only use this tag when you are ready to present the final clause to the user.</Summary>
-      }[]
+    {
+      title: string;
+      content: string;
+      summary: string;
+    }[]
   >([]);
 
-  const handleAddClause = async (clause: { title: string; clause: string }) => {
+  const handleAddClause = async (clause: {
+    title: string;
+    clause: string;
+    summary: string;
+  }) => {
     setCurrentClause(clause);
+    const incrementalContext = getIncrementalContext(document);
+
     const newPrompt = sow_prompt
       .replaceAll("--CLAUSE--", clause.clause.toString())
       .replaceAll(
@@ -76,7 +88,11 @@ const SOWGen = () => {
         document
           .find((doc) => doc.title === "Scope of Work")
           ?.content.toString() ?? "" // TODO: ????????????? hah?
-      );
+      )
+      .concat(
+        "<Summary>This will contain a summary of the finished clause if you complete the clause. You only have 128 tokens to summarize the clause. Do not go over this token limit under any circumstance.</Summary>"
+      )
+      .concat(incrementalContext);
 
     const newContext = [
       ...contexts,
@@ -116,6 +132,7 @@ const SOWGen = () => {
       newDocument[existingDocumentIndex] = {
         title: currentClause.title,
         content: currentClause.clause,
+        summary: currentClause.summary,
       };
       setDocument(newDocument);
     } else {
@@ -124,6 +141,7 @@ const SOWGen = () => {
         {
           title: currentClause.title,
           content: currentClause.clause,
+          summary: currentClause.summary,
         },
       ];
       setDocument(newDocument);
@@ -135,8 +153,12 @@ const SOWGen = () => {
 
   // auto select Scope of Work clause
   useEffect(() => {
-    if (currentClause.title === "" && ScopeOfWork) {
-      handleAddClause(ScopeOfWork);
+    if (clauseRef.current === "" && ScopeOfWork) {
+      clauseRef.current = ScopeOfWork.title;
+      handleAddClause({
+        ...ScopeOfWork,
+        summary: "",
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
