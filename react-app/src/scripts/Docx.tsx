@@ -1,4 +1,4 @@
-import { Document, Packer, Paragraph, TextRun } from "docx";
+import { AlignmentType, Document, Packer, Paragraph, TextRun } from "docx";
 
 const createDocument = (
   title: string,
@@ -18,7 +18,7 @@ const createDocument = (
                 font: "Arial",
               }),
             ],
-            alignment: "center",
+            alignment: AlignmentType.CENTER, // Set alignment to CENTER
           }),
           ...clauses.map((clause, index) => {
             return new Paragraph({

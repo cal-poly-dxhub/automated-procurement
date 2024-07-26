@@ -5,8 +5,8 @@ const CurDocument = ({
   document,
   setDocument,
   documentTitle,
-  contexts,
   setCurrentClause,
+  sowgenContext,
   debug = false,
 }: {
   document: { title: string; content: string; summary: string }[];
@@ -14,21 +14,30 @@ const CurDocument = ({
     document: { title: string; content: string; summary: string }[]
   ) => void;
   documentTitle: string | null;
-  contexts: {
-    title: string;
-    context: { role: string; content: { type: string; text: string }[] }[];
-  }[];
   setCurrentClause: (currentClause: {
     title: string;
     clause: string;
     summary: string;
   }) => void;
+  sowgenContext: {
+    contexts: {
+      title: string;
+      context: { role: string; content: { type: string; text: string }[] }[];
+    }[];
+    category: string | null;
+    userInstitution: string | null;
+    supplier: string | null;
+    documentPurpose: string | null;
+    document: { title: string; content: string; summary: string }[];
+    currentClause: { title: string; clause: string; summary: string };
+    documentTitle: string | null;
+  };
   debug?: boolean;
 }) => {
   const navigate = useNavigate();
   const handleExport = async () => {
     navigate("/sow-finish", {
-      state: { document, documentTitle, contexts },
+      state: sowgenContext,
     });
   };
 

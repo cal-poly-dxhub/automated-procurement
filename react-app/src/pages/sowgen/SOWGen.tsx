@@ -26,18 +26,27 @@ const SOWGen = () => {
   const location = useLocation();
 
   // from finish doc
-  const c: {
-    title: string;
-    context: { role: string; content: { type: string; text: string }[] }[];
-  }[] = location.state?.context ?? [];
-  const d: { title: string; content: string; summary: string }[] =
-    location.state?.document ?? [];
+  const sowgenContext: {
+    contexts: {
+      title: string;
+      context: { role: string; content: { type: string; text: string }[] }[];
+    }[];
+    category: string;
+    userInstitution: string;
+    supplier: string;
+    documentPurpose: string;
+    document: { title: string; content: string; summary: string }[];
+    currentClause: { title: string; clause: string; summary: string };
+    documentTitle: string;
+  } = location?.state?.sowgenContext;
 
   // from params
-  const category = searchParams.get("category");
-  const userInstitution = searchParams.get("userInstitution");
-  const supplier = searchParams.get("supplier");
-  const documentPurpose = searchParams.get("documentPurpose");
+  const category = sowgenContext?.category ?? searchParams.get("category");
+  const userInstitution =
+    sowgenContext?.category ?? searchParams.get("userInstitution");
+  const supplier = sowgenContext?.category ?? searchParams.get("supplier");
+  const documentPurpose =
+    sowgenContext?.category ?? searchParams.get("documentPurpose");
 
   // for sowchat
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,7 +58,7 @@ const SOWGen = () => {
         content: { type: string; text: string }[];
       }[];
     }[]
-  >(c ?? []);
+  >(sowgenContext?.contexts ?? []);
 
   // for curdocument
   const [accepted, setAccepted] = useState<boolean>(false);
@@ -57,11 +66,13 @@ const SOWGen = () => {
     title: string;
     clause: string;
     summary: string;
-  }>({
-    title: "",
-    clause: "",
-    summary: "",
-  });
+  }>(
+    sowgenContext?.currentClause ?? {
+      title: "",
+      clause: "",
+      summary: "",
+    }
+  );
   const clauseRef = useRef<string>("");
   const [document, setDocument] = useState<
     {
@@ -69,7 +80,7 @@ const SOWGen = () => {
       content: string;
       summary: string;
     }[]
-  >(d ?? []);
+  >(sowgenContext?.document ?? []);
 
   const handleAddClause = async (clause: {
     title: string;
@@ -198,7 +209,16 @@ const SOWGen = () => {
           document={document}
           setDocument={setDocument}
           documentTitle={category + " Scope of Work"}
-          contexts={contexts}
+          sowgenContext={{
+            contexts,
+            category,
+            userInstitution,
+            supplier,
+            documentPurpose,
+            document,
+            currentClause,
+            documentTitle: category + " Scope of Work",
+          }}
           setCurrentClause={setCurrentClause}
           debug={DEBUG}
         />

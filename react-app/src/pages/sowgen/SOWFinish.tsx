@@ -19,11 +19,20 @@ const Finish = () => {
   const document: { title: string; content: string; summary: string }[] =
     location.state?.document || [];
   const documentTitle = location.state?.documentTitle || null;
+  const sowgenContext: {
+    contexts: {
+      title: string;
+      context: { role: string; content: { type: string; text: string }[] }[];
+    }[];
+    category: string;
+    userInstitution: string;
+    supplier: string;
+    documentPurpose: string;
+    document: { title: string; content: string; summary: string }[];
+    currentClause: { title: string; clause: string; summary: string };
+  } = location.state;
 
   // for going back to edit document
-  const context: { title: string; content: string }[] =
-    location.state?.context || [];
-
   const generated = useRef(false);
   const [formattedDocument, setFormattedDocument] = useState<
     { title: string; content: string }[]
@@ -81,9 +90,14 @@ const Finish = () => {
           <button
             className="button"
             onClick={() => {
-              navigate("/sow-gen", {
-                state: { document, context },
-              });
+              navigate(
+                `/sow-gen?category=${sowgenContext.category}&userInstitution=${sowgenContext.userInstitution}&supplier=${sowgenContext.supplier}&documentPurpose=${sowgenContext.documentPurpose}`,
+                {
+                  state: {
+                    sowgenContext,
+                  },
+                }
+              );
             }}
           >
             Edit Document
@@ -91,6 +105,10 @@ const Finish = () => {
           <button
             className="button"
             onClick={() => {
+              if (!generated.current) {
+                return;
+              }
+
               downloadDocument(documentTitle, formattedDocument);
             }}
           >
@@ -99,6 +117,10 @@ const Finish = () => {
           <button
             className="button"
             onClick={() => {
+              if (!generated.current) {
+                return;
+              }
+
               setFormattedDocument([]);
               generated.current = false;
             }}
