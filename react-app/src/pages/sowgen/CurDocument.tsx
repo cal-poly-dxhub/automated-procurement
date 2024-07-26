@@ -1,63 +1,35 @@
-import prompts from "../../assets/prompt.json";
-import { createDocument } from "../../scripts/Docx";
-import {
-  getBedrockResponse,
-  getCaluseTags,
-  getNumberTags,
-  getTitleTags,
-} from "../../scripts/LLMGeneral";
+import { useNavigate } from "react-router-dom";
 import "./CurDocument.css";
-
-const sow_finalize = prompts["sow_finalize"];
 
 const CurDocument = ({
   document,
   setDocument,
   documentTitle,
+  contexts,
   setCurrentClause,
+  debug = false,
 }: {
   document: { title: string; content: string; summary: string }[];
   setDocument: (
     document: { title: string; content: string; summary: string }[]
   ) => void;
   documentTitle: string | null;
+  contexts: {
+    title: string;
+    context: { role: string; content: { type: string; text: string }[] }[];
+  }[];
   setCurrentClause: (currentClause: {
     title: string;
     clause: string;
     summary: string;
   }) => void;
+  debug?: boolean;
 }) => {
+  const navigate = useNavigate();
   const handleExport = async () => {
-    const message = sow_finalize + document.map((doc) => doc.content).join(" ");
-    const context = {
-      role: "user",
-      content: [{ type: "text", text: message }],
-    };
-
-    const response = await getBedrockResponse([context]);
-    console.log("response:", JSON.stringify(response, null, 2));
-
-    const clauses = [];
-    while (true) {
-      const currentClause = getNumberTags(clauses.length + 1, response);
-      if (currentClause === "") {
-        break;
-      }
-
-      const title = getTitleTags([{ type: "text", text: currentClause }]);
-      const clause = getCaluseTags([{ type: "text", text: currentClause }]);
-      clauses.push({ title, content: clause });
-    }
-
-    console.log("clauses:", JSON.stringify(clauses, null, 2));
-
-    if (!documentTitle) {
-      const title = `ScopeOfWork${new Date().getTime()}`;
-      createDocument(title, clauses);
-      return;
-    }
-
-    createDocument(documentTitle, clauses);
+    navigate("/sow-finish", {
+      state: { document, documentTitle, contexts },
+    });
   };
 
   return (
@@ -97,9 +69,11 @@ const CurDocument = ({
         <button className="button" onClick={handleExport}>
           Export Document
         </button>
-        <button className="button" onClick={() => console.log(document)}>
-          Log Document
-        </button>
+        {debug && (
+          <button className="button" onClick={() => console.log(document)}>
+            Log Document
+          </button>
+        )}
       </div>
     </div>
   );

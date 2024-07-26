@@ -7,11 +7,13 @@ const ALaCarte = ({
   currentClause,
   handleAddClause,
   document,
+  debug = false,
 }: {
   currentCategory: string;
   currentClause: { title: string; clause: string };
   handleAddClause: (clause: any) => void;
   document: { title: string; content: string }[];
+  debug?: boolean;
 }) => {
   const [customModal, setCustomModal] = useState<boolean>(false);
   const [customTemplate, setCustomTemplate] = useState<{

@@ -40,6 +40,15 @@ const createDocument = (
     ],
   });
 
+  return doc;
+};
+
+const downloadDocument = (
+  title: string,
+  clauses: { title: string; content: string }[]
+) => {
+  const doc = createDocument(title, clauses);
+
   Packer.toBlob(doc).then((blob) => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -50,4 +59,4 @@ const createDocument = (
   });
 };
 
-export { createDocument };
+export { createDocument, downloadDocument };

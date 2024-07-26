@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import "./SOWGen.css";
 
 import Navbar from "../../components/Navbar";
@@ -19,8 +19,19 @@ const ScopeOfWork = templates.Clauses.find(
   (clause) => clause.category === "All"
 )?.clauses.find((clause) => clause.title === "Scope of Work");
 
+const DEBUG = false;
+
 const SOWGen = () => {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  // from finish doc
+  const c: {
+    title: string;
+    context: { role: string; content: { type: string; text: string }[] }[];
+  }[] = location.state?.context ?? [];
+  const d: { title: string; content: string; summary: string }[] =
+    location.state?.document ?? [];
 
   // from params
   const category = searchParams.get("category");
@@ -38,7 +49,7 @@ const SOWGen = () => {
         content: { type: string; text: string }[];
       }[];
     }[]
-  >([]);
+  >(c ?? []);
 
   // for curdocument
   const [accepted, setAccepted] = useState<boolean>(false);
@@ -58,7 +69,7 @@ const SOWGen = () => {
       content: string;
       summary: string;
     }[]
-  >([]);
+  >(d ?? []);
 
   const handleAddClause = async (clause: {
     title: string;
@@ -88,9 +99,6 @@ const SOWGen = () => {
         document
           .find((doc) => doc.title === "Scope of Work")
           ?.content.toString() ?? "" // TODO: ????????????? hah?
-      )
-      .concat(
-        "<Summary>This will contain a summary of the finished clause if you complete the clause. You only have 128 tokens to summarize the clause. Do not go over this token limit under any circumstance.</Summary>"
       )
       .concat(incrementalContext);
 
@@ -153,7 +161,7 @@ const SOWGen = () => {
 
   // auto select Scope of Work clause
   useEffect(() => {
-    if (clauseRef.current === "" && ScopeOfWork) {
+    if (clauseRef.current === "" && ScopeOfWork && contexts.length === 0) {
       clauseRef.current = ScopeOfWork.title;
       handleAddClause({
         ...ScopeOfWork,
@@ -169,10 +177,11 @@ const SOWGen = () => {
       <Navbar />
       <div className="sow-tri-container">
         <ALaCarte
-          currentCategory="Technology"
+          currentCategory={category ?? ""}
           currentClause={currentClause}
           handleAddClause={handleAddClause}
           document={document}
+          debug={DEBUG}
         />
         <SOWChat
           loading={loading}
@@ -183,12 +192,15 @@ const SOWGen = () => {
           currentClause={currentClause}
           setCurrentClause={setCurrentClause}
           document={document}
+          debug={DEBUG}
         />
         <CurDocument
           document={document}
           setDocument={setDocument}
           documentTitle={category + " Scope of Work"}
+          contexts={contexts}
           setCurrentClause={setCurrentClause}
+          debug={DEBUG}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getBedrockResponse,
   getCaluseTags,
@@ -17,6 +17,7 @@ const SOWChat = ({
   currentClause,
   setCurrentClause,
   document,
+  debug = false,
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
@@ -38,7 +39,7 @@ const SOWChat = ({
     summary: string;
   }) => void;
   document: { title: string; content: string }[];
-  title?: string;
+  debug?: boolean;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [clausePopup, setClausePopup] = useState<boolean>(false);
@@ -49,6 +50,10 @@ const SOWChat = ({
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === "") {
+      return;
+    }
+
+    if (loading) {
       return;
     }
 
@@ -150,6 +155,12 @@ const SOWChat = ({
     });
   };
 
+  useEffect(() => {
+    const chatBox = window.document.querySelector(".message-container");
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contexts]); // auto scroll to bottom
+
   return (
     <div className="sow-container">
       <div className="chat-box-title">
@@ -200,13 +211,15 @@ const SOWChat = ({
             }}
           />
           <button onClick={handleSendMessage}>Send</button>
-          <button
-            onClick={() => {
-              console.log(contexts);
-            }}
-          >
-            Log Context
-          </button>
+          {debug && (
+            <button
+              onClick={() => {
+                console.log(contexts);
+              }}
+            >
+              Log Context
+            </button>
+          )}
         </div>
       </div>
     </div>
