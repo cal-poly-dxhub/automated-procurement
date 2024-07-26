@@ -4,7 +4,7 @@ import "./AmendClause.css";
 import AmendInput from "./AmendInput";
 
 import j from "../../assets/prompt.json";
-import { createDocument } from "../../scripts/Docx";
+import { downloadDocument } from "../../scripts/Docx";
 import {
   getBedrockResponse,
   getCaluseTags,
@@ -14,6 +14,8 @@ import {
 import AmendChat from "./AmendChat";
 const initial_prompt = j["amend_clause"];
 const finalize_prompt = j["amend_finalize"];
+
+const DEBUG = false;
 
 const AmendClause = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -99,14 +101,17 @@ const AmendClause = () => {
       console.log("clauses:", JSON.stringify(clauses, null, 2));
 
       const title = `Scope of Work Amendment - ${new Date().toDateString()}`;
-      createDocument(title, clauses);
+      // createDocument(title, clauses);
+      downloadDocument(title, clauses);
     };
 
     if (accepted) {
       if (context) {
         console.log("context:", context);
         const response =
-          context.context[context.context.length - 2].content ?? ""; // -2 here
+          context?.context[context.context.length - 2]?.content ??
+          context?.context[context.context.length - 1]?.content ??
+          "no clause found"; // -2 and -1?
         const clause = getCaluseTags(response);
         const doc = [
           {
@@ -139,6 +144,7 @@ const AmendClause = () => {
           currentClause={{ ...currentClause, summary: "" }}
           setCurrentClause={setCurrentClause}
           document={document}
+          debug={DEBUG}
         />
       </div>
     </div>

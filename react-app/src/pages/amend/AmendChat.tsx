@@ -17,6 +17,7 @@ const AmendChat = ({
   currentClause,
   setCurrentClause,
   document,
+  debug,
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
@@ -36,7 +37,7 @@ const AmendChat = ({
     summary: string;
   }) => void;
   document: { title: string; content: string }[];
-  title?: string;
+  debug?: boolean;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [clausePopup, setClausePopup] = useState<boolean>(false);
@@ -188,13 +189,15 @@ const AmendChat = ({
             }}
           />
           <button onClick={handleSendMessage}>Send</button>
-          <button
-            onClick={() => {
-              console.log("amendchat context", context);
-            }}
-          >
-            Log Context
-          </button>
+          {debug && (
+            <button
+              onClick={() => {
+                console.log("amendchat context", context);
+              }}
+            >
+              Log Context
+            </button>
+          )}
         </div>
       </div>
     </div>
