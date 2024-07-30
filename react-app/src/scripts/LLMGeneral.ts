@@ -145,6 +145,12 @@ const getIncrementalContext = (d: { title: string; content: string }[]) => {
   return `\n\nHere is a running summary of what the document currently contains: <DocumentContext>${joinedSummaries}</DocumentContext>`;
 };
 
+const getIncrementalTruths = (d: { title: string; content: string }[]) => {
+  const truths = d.map((doc) => doc.content);
+  const joinedTruths = truths.join("\n");
+  return `\n\nHere is a list of all the truths in the document: <DocumentTruths>${joinedTruths}</DocumentTruths>`;
+};
+
 // shouldnt return clause, need separate function for that
 const getInnerResponse = (response: { type: string; text: string }[]) => {
   return {
@@ -164,6 +170,10 @@ const getResponseTags = (response: { type: string; text: string }[]) => {
 
 const getCaluseTags = (response: { type: string; text: string }[]) => {
   return response[0]?.text?.split("<Clause>")[1]?.split("</Clause>")[0] ?? "";
+};
+
+const getTruthsTags = (response: { type: string; text: string }[]) => {
+  return response[0]?.text?.split("<Truths>")[1]?.split("</Truths>")[0] ?? "";
 };
 
 const getSummaryTags = (response: { type: string; text: string }[]) => {
@@ -188,10 +198,12 @@ export {
   getBedrockResponse,
   getCaluseTags,
   getIncrementalContext,
+  getIncrementalTruths,
   getInnerResponse,
   getNumberTags,
   getResponseTags,
   getSummaryTags,
   getTitleTags,
+  getTruthsTags,
   readContract,
 };

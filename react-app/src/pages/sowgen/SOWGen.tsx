@@ -6,7 +6,7 @@ import Navbar from "../../components/Navbar";
 
 import {
   getBedrockResponse,
-  getIncrementalContext,
+  getIncrementalTruths,
 } from "../../scripts/LLMGeneral";
 import ALaCarte from "./ALaCarte";
 import CurDocument from "./CurDocument";
@@ -19,7 +19,7 @@ const ScopeOfWork = templates.Clauses.find(
   (clause) => clause.category === "All"
 )?.clauses.find((clause) => clause.title === "Scope of Work");
 
-const DEBUG = false;
+const DEBUG = true;
 
 const SOWGen = () => {
   const [searchParams] = useSearchParams();
@@ -35,8 +35,18 @@ const SOWGen = () => {
     userInstitution: string;
     supplier: string;
     documentPurpose: string;
-    document: { title: string; content: string; summary: string }[];
-    currentClause: { title: string; clause: string; summary: string };
+    document: {
+      title: string;
+      content: string;
+      summary: string;
+      truths: string;
+    }[];
+    currentClause: {
+      title: string;
+      clause: string;
+      summary: string;
+      truths: string;
+    };
     documentTitle: string;
   } = location?.state?.sowgenContext;
 
@@ -66,11 +76,13 @@ const SOWGen = () => {
     title: string;
     clause: string;
     summary: string;
+    truths: string;
   }>(
     sowgenContext?.currentClause ?? {
       title: "",
       clause: "",
       summary: "",
+      truths: "",
     }
   );
   const clauseRef = useRef<string>("");
@@ -79,6 +91,7 @@ const SOWGen = () => {
       title: string;
       content: string;
       summary: string;
+      truths: string;
     }[]
   >(sowgenContext?.document ?? []);
 
@@ -86,9 +99,11 @@ const SOWGen = () => {
     title: string;
     clause: string;
     summary: string;
+    truths: string;
   }) => {
     setCurrentClause(clause);
-    const incrementalContext = getIncrementalContext(document);
+    // const incrementalContext = getIncrementalContext(document);
+    const incrementalTruths = getIncrementalTruths(document);
 
     const newPrompt = sow_prompt
       .replaceAll("--CLAUSE--", clause.clause.toString())
@@ -111,7 +126,8 @@ const SOWGen = () => {
           .find((doc) => doc.title === "Scope of Work")
           ?.content.toString() ?? "" // TODO: ????????????? hah?
       )
-      .concat(incrementalContext);
+      // .concat(incrementalContext);
+      .concat(incrementalTruths);
 
     const newContext = [
       ...contexts,
@@ -152,6 +168,7 @@ const SOWGen = () => {
         title: currentClause.title,
         content: currentClause.clause,
         summary: currentClause.summary,
+        truths: currentClause.truths,
       };
       setDocument(newDocument);
     } else {
@@ -161,6 +178,7 @@ const SOWGen = () => {
           title: currentClause.title,
           content: currentClause.clause,
           summary: currentClause.summary,
+          truths: currentClause.truths,
         },
       ];
       setDocument(newDocument);
@@ -177,6 +195,7 @@ const SOWGen = () => {
       handleAddClause({
         ...ScopeOfWork,
         summary: "",
+        truths: "",
       });
     }
 

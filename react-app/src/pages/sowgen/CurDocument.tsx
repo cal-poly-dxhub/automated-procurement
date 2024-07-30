@@ -9,15 +9,26 @@ const CurDocument = ({
   sowgenContext,
   debug = false,
 }: {
-  document: { title: string; content: string; summary: string }[];
+  document: {
+    title: string;
+    content: string;
+    summary: string;
+    truths: string;
+  }[];
   setDocument: (
-    document: { title: string; content: string; summary: string }[]
+    document: {
+      title: string;
+      content: string;
+      summary: string;
+      truths: string;
+    }[]
   ) => void;
   documentTitle: string | null;
   setCurrentClause: (currentClause: {
     title: string;
     clause: string;
     summary: string;
+    truths: string;
   }) => void;
   sowgenContext: {
     contexts: {
@@ -28,8 +39,18 @@ const CurDocument = ({
     userInstitution: string | null;
     supplier: string | null;
     documentPurpose: string | null;
-    document: { title: string; content: string; summary: string }[];
-    currentClause: { title: string; clause: string; summary: string };
+    document: {
+      title: string;
+      content: string;
+      summary: string;
+      truths: string;
+    }[];
+    currentClause: {
+      title: string;
+      clause: string;
+      summary: string;
+      truths: string;
+    };
     documentTitle: string | null;
   };
   debug?: boolean;
@@ -56,6 +77,7 @@ const CurDocument = ({
                     title: doc.title,
                     clause: doc.content,
                     summary: "",
+                    truths: "",
                   });
                 }}
                 className="button"

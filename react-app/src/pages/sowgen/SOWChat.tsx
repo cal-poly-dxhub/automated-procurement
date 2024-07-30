@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import {
   getBedrockResponse,
   getCaluseTags,
-  getIncrementalContext,
+  getIncrementalTruths,
   getResponseTags,
   getSummaryTags,
+  getTruthsTags,
 } from "../../scripts/LLMGeneral";
 import "./SOWChat.css";
 
@@ -32,11 +33,17 @@ const SOWChat = ({
     }[]
   ) => void;
   setAccepted: (accepted: boolean) => void;
-  currentClause: { title: string; clause: string; summary: string };
+  currentClause: {
+    title: string;
+    clause: string;
+    summary: string;
+    truths: string;
+  };
   setCurrentClause: (currentClause: {
     title: string;
     clause: string;
     summary: string;
+    truths: string;
   }) => void;
   document: { title: string; content: string }[];
   debug?: boolean;
@@ -67,9 +74,14 @@ const SOWChat = ({
       context: [],
     };
 
-    const incrementalContext = getIncrementalContext(document);
+    // const incrementalContext = getIncrementalContext(document);
+    // if (oldContext.context.length > 0) {
+    //   oldContext.context[0].content[0].text += incrementalContext;
+    // }
+
+    const incrementalTruths = getIncrementalTruths(document);
     if (oldContext.context.length > 0) {
-      oldContext.context[0].content[0].text += incrementalContext;
+      oldContext.context[0].content[0].text += incrementalTruths;
     }
 
     const newContext = [
@@ -87,12 +99,14 @@ const SOWChat = ({
     const r = await getBedrockResponse(newContext);
     const finishedClause = getCaluseTags(r);
     const summary = getSummaryTags(r);
+    const truths = getTruthsTags(r);
 
     if (finishedClause) {
       setCurrentClause({
         title: currentClause.title,
         clause: finishedClause,
         summary,
+        truths,
       });
       setClausePopup(true);
     }
@@ -159,7 +173,7 @@ const SOWChat = ({
     const chatBox = window.document.querySelector(".message-container");
     chatBox?.scrollTo(0, chatBox.scrollHeight);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contexts]); // auto scroll to bottom
+  }, [contexts, loading]); // auto scroll to bottom
 
   return (
     <div className="sow-container">
