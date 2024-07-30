@@ -45,7 +45,12 @@ const SOWChat = ({
     summary: string;
     truths: string;
   }) => void;
-  document: { title: string; content: string }[];
+  document: {
+    title: string;
+    content: string;
+    summary: string;
+    truths: string;
+  }[];
   debug?: boolean;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");

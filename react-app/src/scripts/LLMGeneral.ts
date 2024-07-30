@@ -139,14 +139,19 @@ const getBedrockResponse = async (
   }
 };
 
-const getIncrementalContext = (d: { title: string; content: string }[]) => {
-  const summaries = d.map((doc) => doc.content);
+const getIncrementalContext = (
+  d: { title: string; content: string; summary: string; truths: string }[]
+) => {
+  const summaries = d.map((doc) => doc.summary);
   const joinedSummaries = summaries.join("\n");
   return `\n\nHere is a running summary of what the document currently contains: <DocumentContext>${joinedSummaries}</DocumentContext>`;
 };
 
-const getIncrementalTruths = (d: { title: string; content: string }[]) => {
-  const truths = d.map((doc) => doc.content);
+const getIncrementalTruths = (
+  d: { title: string; content: string; summary: string; truths: string }[]
+) => {
+  const truths = d.map((doc) => doc.truths);
+  console.log(truths);
   const joinedTruths = truths.join("\n");
   return `\n\nHere is a list of all the truths in the document: <DocumentTruths>${joinedTruths}</DocumentTruths>`;
 };

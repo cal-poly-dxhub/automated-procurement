@@ -37,10 +37,13 @@ const AmendClause = () => {
     title: "",
     clause: "",
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [document, setDocument] = useState<
     | {
         title: string;
         content: string;
+        summary: string;
+        truths: string;
       }[]
   >([]);
 
