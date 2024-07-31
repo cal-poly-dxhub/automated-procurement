@@ -19,7 +19,7 @@ const ScopeOfWork = templates.Clauses.find(
   (clause) => clause.category === "All"
 )?.clauses.find((clause) => clause.title === "Scope of Work");
 
-const DEBUG = true;
+const DEBUG = false;
 
 const SOWGen = () => {
   const [searchParams] = useSearchParams();
@@ -102,6 +102,10 @@ const SOWGen = () => {
     truths: string;
   }) => {
     setCurrentClause(clause);
+    if (contexts.find((c) => c.title === clause.title) !== undefined) {
+      return;
+    }
+
     // const incrementalContext = getIncrementalContext(document);
     const incrementalTruths = getIncrementalTruths(document);
 

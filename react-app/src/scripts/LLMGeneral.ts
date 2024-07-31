@@ -151,7 +151,6 @@ const getIncrementalTruths = (
   d: { title: string; content: string; summary: string; truths: string }[]
 ) => {
   const truths = d.map((doc) => doc.truths);
-  console.log(truths);
   const joinedTruths = truths.join("\n");
   return `\n\nHere is a list of all the truths in the document: <DocumentTruths>${joinedTruths}</DocumentTruths>`;
 };
