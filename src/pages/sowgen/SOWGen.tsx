@@ -19,7 +19,7 @@ const ScopeOfWork = templates.Clauses.find(
   (clause) => clause.category === "All"
 )?.clauses.find((clause) => clause.title === "Scope of Work");
 
-const DEBUG = false;
+const DEBUG = true;
 
 const SOWGen = () => {
   const [searchParams] = useSearchParams();

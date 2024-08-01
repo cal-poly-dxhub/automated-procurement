@@ -1,8 +1,0 @@
-boto3
-langchain
-langchain_community
-langchain-community
-langchain-aws
-openai
-langchain_openai
-dotenv

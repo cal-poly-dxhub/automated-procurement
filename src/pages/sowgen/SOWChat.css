@@ -33,7 +33,7 @@
 .user {
   background-color: var(--primary-color);
   color: #fff;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .assistant {
