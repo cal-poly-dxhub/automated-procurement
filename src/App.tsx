@@ -3,17 +3,20 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import AmendClause from "./pages/amend/AmendClause";
 import ContractGen from "./pages/ContractGen";
 import ContractRead from "./pages/ContractRead";
-import Landing from "./pages/Landing";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import IntroPage from "./pages/sowgen/IntroPage";
 import SOWFinish from "./pages/sowgen/SOWFinish";
 import SOWGen from "./pages/sowgen/SOWGen";
 import SOWReadthrough from "./pages/sowgen/SOWReadthrough";
 
+import Dashboard from "./Dashboard/Dashboard";
+
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        {/* <Route path="/" element={<Landing />} /> */}
+        <Route path="/" element={<Dashboard />} />
         <Route path="/contract-gen" element={<ContractGen />} />
         <Route path="/contract-read" element={<ContractRead />} />
         <Route path="/sow-intro" element={<IntroPage />} />
