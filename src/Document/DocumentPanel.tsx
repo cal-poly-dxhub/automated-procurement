@@ -1,15 +1,16 @@
+import Container from "../components/Container";
 import Document from "./Document";
 
 const DocumentPanel = ({ style }: { style?: any }) => {
   return (
-    <div style={{ ...styles.container, ...style }} className="column">
+    <Container className="column" style={{ ...styles.container, ...style }}>
       <h2>documentpanel</h2>
       <div style={styles.documents} className="row">
-        {[0, 0, 0, 0, 0, 0, 0, 0].map(() => (
+        {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => (
           <Document />
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 
@@ -20,6 +21,7 @@ const styles = {
     display: "flex",
     flex: 1,
     padding: "1rem",
+    transition: "background-color 0.2s",
   },
   documents: {
     // flexWrap: true,

@@ -1,8 +1,9 @@
+import Container from "./Container";
 import "./Navbar.css";
 
 const Navbar = ({ style }: { style?: any }) => {
   return (
-    <nav className="navbar" style={style}>
+    <Container className="navbar" style={style}>
       <div className="navbar-brand">
         <a href="/">DxHub Procurement</a>
       </div>
@@ -12,7 +13,7 @@ const Navbar = ({ style }: { style?: any }) => {
         <a href="/sow-intro">SOW Generator</a>
         <a href="/amend-clause">Amend Clause</a>
       </div>
-    </nav>
+    </Container>
   );
 };
 
