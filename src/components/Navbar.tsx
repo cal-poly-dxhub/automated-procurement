@@ -1,8 +1,8 @@
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ style }: { style?: any }) => {
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={style}>
       <div className="navbar-brand">
         <a href="/">DxHub Procurement</a>
       </div>
