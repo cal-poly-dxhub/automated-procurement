@@ -4,28 +4,43 @@ import { theme } from "../assets/theme";
 const Container = ({
   children,
   className,
-  backgroundColors = [
-    theme.colors.alternateBackground,
-    theme.colors.background,
-  ],
+  clickable = false,
+  regularBackgroundColor = theme.colors.background,
+  hoverBackgroundColor = theme.colors.alternateBackground,
+  clickBackgroundColor = theme.colors.click,
+  transition = "0.2",
   style,
 }: {
   children: ReactNode | ReactNode[];
   className?: string;
-  backgroundColors?: string[];
+  clickable?: boolean;
+  regularBackgroundColor?: string;
+  hoverBackgroundColor?: string;
+  clickBackgroundColor?: string;
+  transition?: string;
   style?: any;
 }) => {
   const [hover, setHover] = useState<boolean>(false);
+  const [mouseDown, setMouseDown] = useState<boolean>(false);
 
-  const hoverStyle = {
-    backgroundColor: hover ? backgroundColors[0] : backgroundColors[1],
+  const bgColor = {
+    backgroundColor:
+      mouseDown && clickable
+        ? clickBackgroundColor
+        : hover
+        ? hoverBackgroundColor
+        : regularBackgroundColor,
+    transition: `background-color ${transition}s`,
   };
 
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ ...hoverStyle, ...style }}
+      onMouseDown={() => setMouseDown(true)}
+      onMouseUp={() => setMouseDown(false)}
+      // onClick={() => setMouseDown(true)}
+      style={{ ...bgColor, ...style }}
       className={className}
     >
       {children}

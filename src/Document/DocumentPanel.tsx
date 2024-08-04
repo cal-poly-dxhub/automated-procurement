@@ -22,6 +22,7 @@ const styles = {
     flex: 1,
     padding: "1rem",
     transition: "background-color 0.2s",
+    height: "93vh",
   },
   documents: {
     // flexWrap: true,

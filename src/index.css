@@ -24,6 +24,10 @@ code {
     monospace;
 }
 
+a {
+  color: var(--text-color);
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -33,6 +37,20 @@ code {
   display: flex;
   flex-direction: column;
 }
+
+.scrollY {
+  overflow-y: auto;
+}
+
+.scrollX {
+  overflow-x: auto;
+}
+
+.no-dec {
+  text-decoration: none;
+}
+
+/* --------------------------------------------------- */
 
 .button {
   padding: 0.5rem 1rem;

@@ -8,6 +8,7 @@ const theme = {
     text: "#212529",
     hover: "#133827",
     border: "#d3d1d1",
+    click: "#436857",
   },
 };
 
