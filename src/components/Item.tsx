@@ -1,25 +1,32 @@
 import { ReactNode, useState } from "react";
 import { theme } from "../assets/theme";
 
-const Container = ({
+const Item = ({
   children,
   className,
   regularBackgroundColor = theme.colors.background,
-  hoverBackgroundColor = theme.colors.alternateBackground,
-  transition = "0.4",
+  hoverBackgroundColor = theme.colors.alternate,
+  clickBackgroundColor = theme.colors.click,
+  transition = "0.1",
   style,
 }: {
   children: ReactNode | ReactNode[];
   className?: string;
   regularBackgroundColor?: string;
   hoverBackgroundColor?: string;
+  clickBackgroundColor?: string;
   transition?: string;
   style?: any;
 }) => {
   const [hover, setHover] = useState<boolean>(false);
+  const [mouseDown, setMouseDown] = useState<boolean>(false);
 
   const bgColor = {
-    backgroundColor: hover ? hoverBackgroundColor : regularBackgroundColor,
+    backgroundColor: mouseDown
+      ? clickBackgroundColor
+      : hover
+      ? hoverBackgroundColor
+      : regularBackgroundColor,
     transition: `background-color ${transition}s`,
   };
 
@@ -27,6 +34,8 @@ const Container = ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onMouseDown={() => setMouseDown(true)}
+      onMouseUp={() => setMouseDown(false)}
       style={{ ...bgColor, ...style }}
       className={className}
     >
@@ -35,4 +44,4 @@ const Container = ({
   );
 };
 
-export default Container;
+export default Item;

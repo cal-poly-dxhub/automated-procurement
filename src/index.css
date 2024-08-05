@@ -50,6 +50,11 @@ a {
   text-decoration: none;
 }
 
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 /* --------------------------------------------------- */
 
 .button {

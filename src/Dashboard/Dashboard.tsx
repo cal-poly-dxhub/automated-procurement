@@ -5,9 +5,9 @@ import MemberPanel from "../Member/MemberPanel";
 const Dashboard = () => {
   return (
     <div style={styles.container} className="column">
-      <Navbar />
+      <Navbar style={{ height: "7vh" }} />
       {/* <h1>dashboard</h1> */}
-      <div className="row">
+      <div className="row" style={{ height: "93vh" }}>
         {/* navbar on top */}
         {/* members on left panel */}
         {/* documents in main panel */}
@@ -24,13 +24,15 @@ const styles = {
   container: {
     display: "flex",
     flex: 1,
-    width: "100vw",
-    height: "100vh",
+    // width: "100vw",
+    // height: "100vh",
   },
   memberPanel: {
-    maxWidth: "30vw",
+    minWidth: "20vw",
+    maxWidth: "25vw",
   },
   documentPanel: {
-    maxWidth: "70vw",
+    maxWidth: "80vw",
+    minWidth: "75vw",
   },
 };

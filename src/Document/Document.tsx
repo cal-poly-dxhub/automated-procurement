@@ -1,8 +1,12 @@
+import Item from "../components/Item";
+
 const Document = ({ style }: { style?: any }) => {
   return (
-    <div style={{ ...style, ...styles.container }}>
-      <p>document</p>
-    </div>
+    <Item style={{ ...style, ...styles.container }}>
+      <h3>%title</h3>
+      <p>%category</p>
+      <p>%description</p>
+    </Item>
   );
 };
 
@@ -13,7 +17,7 @@ const styles = {
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
-    width: "15rem",
-    height: "15rem",
+    width: "12.5rem",
+    height: "12.5rem",
   },
 };

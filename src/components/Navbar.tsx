@@ -1,13 +1,12 @@
 import Container from "./Container";
 import Link from "./Link";
-import "./Navbar.css";
 
 const Navbar = ({ style }: { style?: any }) => {
   return (
     <Container style={{ ...styles.container, ...style }}>
       <div className="no-dec" style={styles.brand}>
         <a href="/" className="no-dec">
-          DxHub Procurement
+          DxHub Automated Procurement
         </a>
       </div>
       <div className="navbar-links">

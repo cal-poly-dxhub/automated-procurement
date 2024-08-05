@@ -1,20 +1,19 @@
 import { theme } from "../assets/theme";
-import Container from "../components/Container";
+import Item from "../components/Item";
 
 const Member = () => {
   return (
-    <Container
+    <Item
       style={styles.container}
       hoverBackgroundColor={theme.colors.alternate}
-      clickable
       className="row"
     >
-      <div className="row" style={{ gap: "0.5rem" }}>
-        <p>first name</p>
-        <p>last name</p>
+      <div className="row" style={styles.nameBox}>
+        <p>%first</p>
+        <p>%last</p>
       </div>
-      <p>permission</p>
-    </Container>
+      <p>%permission</p>
+    </Item>
   );
 };
 
@@ -22,10 +21,17 @@ export default Member;
 
 const styles = {
   container: {
-    // transition: "background-color 0.2s",
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     borderRadius: 5,
     marginBottom: 10,
+    maxHeight: "5rem",
     justifyContent: "space-between",
+    overflow: "hidden",
+  },
+  nameBox: {
+    gap: "0.25rem",
+    maxWidth: "11rem",
+    overflow: "hidden",
   },
 };
