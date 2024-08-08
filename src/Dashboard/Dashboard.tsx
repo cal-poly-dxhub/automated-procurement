@@ -1,18 +1,18 @@
 import Navbar from "../components/Navbar";
-import DocumentPanel from "../Document/DocumentPanel";
+import CategoryDocumentPanel from "../Document/CategoryDocumentPanel";
+import RecentDocumentPanel from "../Document/RecentDocumentPanel";
 import MemberPanel from "../Member/MemberPanel";
 
 const Dashboard = () => {
   return (
     <div style={styles.container} className="column">
       <Navbar style={{ height: "7vh" }} />
-      {/* <h1>dashboard</h1> */}
       <div className="row" style={{ height: "93vh" }}>
-        {/* navbar on top */}
-        {/* members on left panel */}
-        {/* documents in main panel */}
         <MemberPanel style={styles.memberPanel} />
-        <DocumentPanel style={styles.documentPanel} />
+        <div className="column" style={{ height: "93vh", width: "78vw" }}>
+          <RecentDocumentPanel style={styles.recentDocumentPanel} />
+          <CategoryDocumentPanel style={styles.customDocumentPanel} />
+        </div>
       </div>
     </div>
   );
@@ -26,13 +26,17 @@ const styles = {
     flex: 1,
     // width: "100vw",
     // height: "100vh",
+    overflow: "hidden",
   },
   memberPanel: {
-    minWidth: "20vw",
-    maxWidth: "25vw",
+    width: "22vw",
   },
-  documentPanel: {
-    maxWidth: "80vw",
-    minWidth: "75vw",
+  recentDocumentPanel: {
+    width: "78vw",
+    height: "32vh",
+  },
+  customDocumentPanel: {
+    width: "78vw",
+    height: "50vh",
   },
 };

@@ -1,7 +1,18 @@
 import { theme } from "../assets/theme";
 import Item from "../components/Item";
+import Text from "../components/Text";
 
-const Member = () => {
+const Member = ({
+  m,
+}: {
+  m: {
+    first_name: string;
+    last_name: string;
+    permission: string;
+  };
+}) => {
+  const { first_name, last_name, permission } = m;
+
   return (
     <Item
       style={styles.container}
@@ -9,10 +20,10 @@ const Member = () => {
       className="row"
     >
       <div className="row" style={styles.nameBox}>
-        <p>%first</p>
-        <p>%last</p>
+        <Text>{first_name}</Text>
+        <Text>{last_name}</Text>
       </div>
-      <p>%permission</p>
+      <Text>{permission}</Text>
     </Item>
   );
 };

@@ -7,6 +7,7 @@ const Item = ({
   regularBackgroundColor = theme.colors.background,
   hoverBackgroundColor = theme.colors.alternate,
   clickBackgroundColor = theme.colors.click,
+  onClick,
   transition = "0.1",
   style,
 }: {
@@ -15,6 +16,7 @@ const Item = ({
   regularBackgroundColor?: string;
   hoverBackgroundColor?: string;
   clickBackgroundColor?: string;
+  onClick?: () => void;
   transition?: string;
   style?: any;
 }) => {
@@ -36,6 +38,7 @@ const Item = ({
       onMouseLeave={() => setHover(false)}
       onMouseDown={() => setMouseDown(true)}
       onMouseUp={() => setMouseDown(false)}
+      onClick={onClick}
       style={{ ...bgColor, ...style }}
       className={className}
     >

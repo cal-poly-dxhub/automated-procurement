@@ -1,0 +1,30 @@
+{
+  "company": "Cal Poly",
+  "members": [
+    {
+      "first_name": "James",
+      "last_name": "Patrick",
+      "permission": "admin"
+    },
+    {
+      "first_name": "Harold",
+      "last_name": "Smith",
+      "permission": "member"
+    },
+    {
+      "first_name": "Allison",
+      "last_name": "Harper",
+      "permission": "admin"
+    },
+    {
+      "first_name": "Vera",
+      "last_name": "Jetop",
+      "permission": "member"
+    },
+    {
+      "first_name": "Casey",
+      "last_name": "Decker",
+      "permission": "member"
+    }
+  ]
+}

@@ -28,6 +28,13 @@ a {
   color: var(--text-color);
 }
 
+select {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+}
+
 .row {
   display: flex;
   flex-direction: row;

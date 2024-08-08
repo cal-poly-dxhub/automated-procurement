@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Campus Gardening Scope of Work",
+    "date": "2024-05-03",
+    "category": "General Services",
+    "description": "general campus gardening services",
+    "institution": "California Polytechnic University, San Luis Opispo",
+    "supplier": "Vantage Gardening",
+    "clauses": [
+      {
+        "title": "1. Definitions",
+        "content": "a. \"Institution\" refers to California Polytechnic State University (Cal Poly).\nb. \"Supplier\" refers to Vantage Gardening, the company contracted to provide gardening and landscaping services.\nc. \"Work Areas\" refers to all outdoor green spaces, including lawns, gardens, planters, trees, and shrubbery on the Cal Poly campus.\nd. \"Contract\" refers to the agreement between Cal Poly and Vantage Gardening for the provision of comprehensive gardening and landscaping services."
+      },
+      {
+        "title": "2. Scope of Work",
+        "content": "The scope of work for this Contract includes the provision of comprehensive gardening and landscaping services for the Work Areas on the Cal Poly campus. The Supplier shall be responsible for maintaining the aesthetic appearance and health of all Work Areas. Services will encompass regular mowing, trimming, pruning, weeding, fertilizing, and general upkeep of planted areas. The Supplier will also ensure proper irrigation and drainage of landscaped zones. The overall objective is to preserve a well-groomed, visually appealing campus environment conducive to learning and community activities."
+      },
+      {
+        "title": "3. Schedule and Work Periods",
+        "content": "a. The Supplier shall perform the gardening and landscaping services for the Institution on a year-round basis, with regularly scheduled maintenance visits throughout each season as reasonably required.\nb. The Institution shall provide the Supplier with a detailed schedule outlining the Work Areas, prioritized tasks, and any specific timing requirements well in advance of each work period.\nc. No work shall be performed on the following nationally recognized holidays: New Year's Day, Memorial Day, Independence Day, Labor Day, Thanksgiving Day, and Christmas Day. The Institution may designate additional restricted days based on campus events or other circumstances with proper notice.\nd. Unless otherwise arranged, all gardening activities shall take place between the hours of 7:00 AM and 6:00 PM, Monday through Friday. Any work required outside of these standard hours must be pre-approved by the Institution's facilities management.\ne. The Supplier shall take necessary precautions to minimize disruptions in areas occupied by students, faculty, or staff during normal operating hours. Loud or hazardous work in such areas may need to be scheduled during off-peak times as determined by the Institution."
+      }
+    ]
+  },
+  {
+    "title": "Dormitory Cleaning Scope of Work",
+    "date": "2023-04-12",
+    "category": "General Services",
+    "description": "summer dormitory cleaning services",
+    "institution": "California Polytechnic University, San Luis Opispo",
+    "supplier": "Emerson Cleaners",
+    "clauses": []
+  },
+  {
+    "title": "Business Banquet Catering Scope of Work",
+    "date": "2024-12-08",
+    "category": "Catering Services",
+    "description": "winter banquet catering services",
+    "institution": "California Polytechnic University, San Luis Opispo",
+    "supplier": "Jerem Catering",
+    "clauses": []
+  }
+]

@@ -1,13 +1,19 @@
 import Container from "../components/Container";
+import Text from "../components/Text";
 import Member from "./Member";
 
+import companies from "../assets/company.json";
+
 const MemberPanel = ({ style }: { style?: any }) => {
+  const sortedMembers = companies.members.sort(
+    (a, b) =>
+      (a.permission === "admin" ? 1 : -1) + (b.permission === "admin" ? 1 : -1)
+  );
   return (
     <Container style={{ ...styles.container, ...style }} className="scrollY">
-      <h2>%company Members</h2>
-      <Member />
-      {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(() => (
-        <Member />
+      <Text type="title">{companies.company} Members</Text>
+      {sortedMembers.map((m) => (
+        <Member m={m} />
       ))}
     </Container>
   );

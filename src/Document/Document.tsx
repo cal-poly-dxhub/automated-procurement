@@ -1,11 +1,40 @@
+import { useNavigate } from "react-router-dom";
 import Item from "../components/Item";
+import Text from "../components/Text";
 
-const Document = ({ style }: { style?: any }) => {
+const Document = ({
+  d,
+  style,
+}: {
+  d: {
+    title: string;
+    date: string;
+    category: string;
+    description: string;
+    clauses: any[];
+  };
+  style?: any;
+}) => {
+  const navigate = useNavigate();
+  const { title, date, category, description } = d;
+
+  const readableDate = new Date(date).toDateString();
+
+  const handleNavigateToEdit = () => {
+    navigate("/edit-document", {
+      state: { document: d },
+    });
+  };
+
   return (
-    <Item style={{ ...style, ...styles.container }}>
-      <h3>%title</h3>
-      <p>%category</p>
-      <p>%description</p>
+    <Item
+      style={{ ...style, ...styles.container }}
+      onClick={handleNavigateToEdit}
+    >
+      <Text type="title">{title}</Text>
+      <Text>{category}</Text>
+      <Text>{description}</Text>
+      <Text type="background">{readableDate}</Text>
     </Item>
   );
 };
@@ -14,10 +43,10 @@ export default Document;
 
 const styles = {
   container: {
-    padding: 10,
+    padding: "1rem",
     marginBottom: 10,
     borderRadius: 5,
-    width: "12.5rem",
-    height: "12.5rem",
+    maxWidth: "15rem",
+    maxHeight: "12rem",
   },
 };

@@ -10,6 +10,7 @@ import SOWGen from "./pages/sowgen/SOWGen";
 import SOWReadthrough from "./pages/sowgen/SOWReadthrough";
 
 import Dashboard from "./Dashboard/Dashboard";
+import EditPage from "./Document/EditPage";
 
 const App = () => {
   return (
@@ -24,6 +25,8 @@ const App = () => {
         <Route path="/sow-finish" element={<SOWFinish />} />
         <Route path="/sow-readthrough" element={<SOWReadthrough />} />
         <Route path="/amend-clause" element={<AmendClause />} />
+        {/* not in nav */}
+        <Route path="/edit-document" element={<EditPage />} />
       </Routes>
     </Router>
   );
