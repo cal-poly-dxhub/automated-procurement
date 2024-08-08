@@ -28,18 +28,18 @@ const EditPage = () => {
         <div style={styles.width}>
           <DocumentEditor document={d} onSelection={handleSelectedText} />
           <div style={{ height: "15rem" }} />
-          {/* {selectedText !== "" && ( */}
-          <div
-            style={{
-              position: "fixed",
-              bottom: "2rem",
-              left: "35vw",
-              right: "35vw",
-            }}
-          >
-            <ChatBox onSubmit={handleSubmit} style={styles.chatBox} />
-          </div>
-          {/* )} */}
+          {selectedText && (
+            <div
+              style={{
+                position: "fixed",
+                bottom: "2rem",
+                left: "35vw",
+                right: "35vw",
+              }}
+            >
+              <ChatBox onSubmit={handleSubmit} style={styles.chatBox} />
+            </div>
+          )}
         </div>
       </div>
     </Container>

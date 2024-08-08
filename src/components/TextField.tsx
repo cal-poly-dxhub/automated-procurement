@@ -1,12 +1,15 @@
 import { useState } from "react";
+import Text from "./Text";
 
 const TextField = ({
   onSubmit,
   type = "regular",
+  button,
   style,
 }: {
   onSubmit: (s: string) => void;
   type?: "title" | "subtitle" | "big" | "bold" | "regular" | "background";
+  button?: boolean;
   style?: any;
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -21,6 +24,11 @@ const TextField = ({
     setInputValue("");
   };
 
+  const handleButtonSubmit = () => {
+    onSubmit(inputValue);
+    setInputValue("");
+  };
+
   if (type === "title") {
     return (
       <form onSubmit={handleSubmit}>
@@ -30,6 +38,7 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.title, ...styles.input, ...style }}
         />
+        {button && <button onClick={handleButtonSubmit} />}
       </form>
     );
   } else if (type === "subtitle") {
@@ -41,6 +50,11 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.subtitle, ...styles.input, ...style }}
         />
+        {button && (
+          <button onClick={handleButtonSubmit}>
+            <Text type={type}>Submit</Text>
+          </button>
+        )}
       </form>
     );
   } else if (type === "big") {
@@ -52,6 +66,11 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.big, ...styles.input, ...style }}
         />
+        {button && (
+          <button onClick={handleButtonSubmit}>
+            <Text type={type}>Submit</Text>
+          </button>
+        )}
       </form>
     );
   } else if (type === "bold") {
@@ -63,6 +82,11 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.bold, ...styles.input, ...style }}
         />
+        {button && (
+          <button onClick={handleButtonSubmit}>
+            <Text type={type}>Submit</Text>
+          </button>
+        )}
       </form>
     );
   } else if (type === "background") {
@@ -74,6 +98,11 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.background, ...styles.input, ...style }}
         />
+        {button && (
+          <button onClick={handleButtonSubmit}>
+            <Text type={type}>Submit</Text>
+          </button>
+        )}
       </form>
     );
   } else {
@@ -85,6 +114,11 @@ const TextField = ({
           onChange={handleChange}
           style={{ ...styles.regular, ...styles.input, ...style }}
         />
+        {button && (
+          <button onClick={handleButtonSubmit}>
+            <Text type={type}>Submit</Text>
+          </button>
+        )}
       </form>
     );
   }

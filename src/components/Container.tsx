@@ -4,7 +4,7 @@ import { theme } from "../assets/theme";
 const Container = ({
   children,
   className,
-  regularBackgroundColor = theme.colors.alternateBackground,
+  regularBackgroundColor = theme.colors.background,
   hoverBackgroundColor = theme.colors.alternateBackground,
   transition = "0.4",
   style,

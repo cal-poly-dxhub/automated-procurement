@@ -13,9 +13,7 @@ const DocumentEditor = ({
   ) => {
     const selection = window.getSelection();
     if (selection) {
-      if (selection.toString() !== "") {
-        onSelection(selection.toString());
-      }
+      onSelection(selection?.toString() ?? "");
     }
   };
 
