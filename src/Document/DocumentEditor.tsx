@@ -23,7 +23,11 @@ const DocumentEditor = ({
         const splitContent = d.content.split("\n");
 
         return (
-          <div style={styles.clause} onMouseUp={handleTextSelection}>
+          <div
+            style={styles.clause}
+            onMouseUp={handleTextSelection}
+            key={d.title}
+          >
             <Text type="subtitle">{d.title}</Text>
             {splitContent.map((c) => (
               <Text>{c}</Text>

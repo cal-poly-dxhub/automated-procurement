@@ -5,11 +5,13 @@ const TextField = ({
   onSubmit,
   type = "regular",
   button,
+  autoFocus,
   style,
 }: {
   onSubmit: (s: string) => void;
   type?: "title" | "subtitle" | "big" | "bold" | "regular" | "background";
   button?: boolean;
+  autoFocus?: boolean;
   style?: any;
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -36,6 +38,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.title, ...styles.input, ...style }}
         />
         {button && <button onClick={handleButtonSubmit} />}
@@ -48,6 +51,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.subtitle, ...styles.input, ...style }}
         />
         {button && (
@@ -64,6 +68,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.big, ...styles.input, ...style }}
         />
         {button && (
@@ -80,6 +85,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.bold, ...styles.input, ...style }}
         />
         {button && (
@@ -96,6 +102,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.background, ...styles.input, ...style }}
         />
         {button && (
@@ -112,6 +119,7 @@ const TextField = ({
           type="text"
           value={inputValue}
           onChange={handleChange}
+          autoFocus={autoFocus}
           style={{ ...styles.regular, ...styles.input, ...style }}
         />
         {button && (

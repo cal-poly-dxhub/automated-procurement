@@ -12,7 +12,7 @@ const ChatBox = ({
   return (
     <Container style={{ ...styles.container, style }}>
       <Text type="subtitle">ChatBox</Text>
-      <TextField onSubmit={onSubmit} button />
+      <TextField onSubmit={onSubmit} button autoFocus />
     </Container>
   );
 };
