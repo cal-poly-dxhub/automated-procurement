@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { theme } from "../assets/theme";
+import { _style } from "../assets/types";
 
 const Link = ({
   children,
@@ -10,7 +11,7 @@ const Link = ({
   children: ReactNode | ReactNode[];
   href: string;
   className?: string;
-  style?: any;
+  style?: _style;
 }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [mouseDown, setMouseDown] = useState<boolean>(false);

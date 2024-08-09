@@ -1,3 +1,4 @@
+import { _style } from "../assets/types";
 import Container from "./Container";
 import Text from "./Text";
 import TextField from "./TextField";
@@ -7,10 +8,10 @@ const ChatBox = ({
   style,
 }: {
   onSubmit: (s: string) => void;
-  style?: any;
+  style?: _style;
 }) => {
   return (
-    <Container style={{ ...styles.container, style }}>
+    <Container style={{ ...styles.container, ...style }}>
       <Text type="subtitle">ChatBox</Text>
       <TextField onSubmit={onSubmit} button autoFocus />
     </Container>

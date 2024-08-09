@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { theme } from "../assets/theme";
+import { _style } from "../assets/types";
 
 const Container = ({
   children,
@@ -14,7 +15,7 @@ const Container = ({
   regularBackgroundColor?: string;
   hoverBackgroundColor?: string;
   transition?: string;
-  style?: any;
+  style?: _style;
 }) => {
   const [hover, setHover] = useState<boolean>(false);
 

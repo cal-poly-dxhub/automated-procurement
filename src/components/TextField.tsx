@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Text from "./Text";
+import { _style } from "../assets/types";
 
 const TextField = ({
   onSubmit,
@@ -12,7 +13,7 @@ const TextField = ({
   type?: "title" | "subtitle" | "big" | "bold" | "regular" | "background";
   button?: boolean;
   autoFocus?: boolean;
-  style?: any;
+  style?: _style;
 }) => {
   const [inputValue, setInputValue] = useState("");
 

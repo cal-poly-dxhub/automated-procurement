@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { _style } from "../assets/types";
 
 const Text = ({
   children,
@@ -9,7 +10,7 @@ const Text = ({
   children: ReactNode | ReactNode[] | string;
   type?: "title" | "subtitle" | "big" | "bold" | "regular" | "background";
   lines?: number;
-  style?: any;
+  style?: _style;
 }) => {
   if (type === "title") {
     return <p style={{ ...styles.title, ...style }}>{children}</p>;

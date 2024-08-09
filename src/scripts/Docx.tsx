@@ -1,9 +1,7 @@
 import { AlignmentType, Document, Packer, Paragraph, TextRun } from "docx";
+import { _clause } from "../assets/types";
 
-const createDocument = (
-  title: string,
-  clauses: { title: string; content: string }[]
-) => {
+const createDocument = (title: string, clauses: _clause[]) => {
   const doc = new Document({
     sections: [
       {
@@ -47,7 +45,7 @@ const createAmendment = (
   title: string,
   institution: string,
   supplier: string,
-  clauses: { title: string; content: string }[]
+  clauses: _clause[]
 ) => {
   const doc = new Document({
     sections: [
@@ -96,10 +94,7 @@ const createAmendment = (
   return doc;
 };
 
-const downloadDocument = (
-  title: string,
-  clauses: { title: string; content: string }[]
-) => {
+const downloadDocument = (title: string, clauses: _clause[]) => {
   const doc = createDocument(title, clauses);
 
   Packer.toBlob(doc).then((blob) => {
@@ -116,7 +111,7 @@ const downloadAmendment = (
   title: string,
   institution: string,
   supplier: string,
-  clauses: { title: string; content: string }[]
+  clauses: _clause[]
 ) => {
   const doc = createAmendment(title, institution, supplier, clauses);
 

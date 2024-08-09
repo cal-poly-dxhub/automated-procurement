@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { _clause } from "../assets/types";
 
 const DocumentSidebar = ({
   clauses,
@@ -8,10 +9,10 @@ const DocumentSidebar = ({
   handleRemoveClause,
   onSubmit,
 }: {
-  clauses: { title: string; clause: string }[];
-  currentDocument: { title: string; content: string }[];
-  setCurrentDocument: (document: { title: string; content: string }[]) => void;
-  handleAddClause: (clause: { title: string; clause: string }) => void;
+  clauses: _clause[];
+  currentDocument: _clause[];
+  setCurrentDocument: (document: _clause[]) => void;
+  handleAddClause: (clause: _clause) => void;
   handleRemoveClause: (index: number) => void;
   onSubmit: () => void;
 }) => {

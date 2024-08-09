@@ -1,20 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { _document, _style } from "../assets/types";
 import Item from "../components/Item";
 import Text from "../components/Text";
 
-const Document = ({
-  d,
-  style,
-}: {
-  d: {
-    title: string;
-    date: string;
-    category: string;
-    description: string;
-    clauses: any[];
-  };
-  style?: any;
-}) => {
+const Document = ({ d, style }: { d: _document; style?: _style }) => {
   const navigate = useNavigate();
   const { title, date, category, description } = d;
 

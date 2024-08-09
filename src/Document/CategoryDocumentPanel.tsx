@@ -6,8 +6,9 @@ import Text from "../components/Text";
 
 import { useState } from "react";
 import categories from "../assets/categories.json";
+import { _style } from "../assets/types";
 
-const CategoryDocumentPanel = ({ style }: { style?: any }) => {
+const CategoryDocumentPanel = ({ style }: { style?: _style }) => {
   const [category, setCategory] = useState<any>({ title: "General Services" });
   return (
     <Container

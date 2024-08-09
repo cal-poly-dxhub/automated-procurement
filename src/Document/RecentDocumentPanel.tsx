@@ -3,8 +3,9 @@ import Text from "../components/Text";
 import Document from "./Document";
 
 import documents from "../assets/documents.json";
+import { _style } from "../assets/types";
 
-const RecentDocumentPanel = ({ style }: { style?: any }) => {
+const RecentDocumentPanel = ({ style }: { style?: _style }) => {
   return (
     <Container className="column" style={{ ...styles.container, ...style }}>
       <Text type="title" style={{ marginBottom: "1rem" }}>

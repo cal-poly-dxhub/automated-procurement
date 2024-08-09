@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { theme } from "../assets/theme";
+import { _style } from "../assets/types";
 
 const Item = ({
   children,
@@ -18,7 +19,7 @@ const Item = ({
   clickBackgroundColor?: string;
   onClick?: () => void;
   transition?: string;
-  style?: any;
+  style?: _style;
 }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [mouseDown, setMouseDown] = useState<boolean>(false);

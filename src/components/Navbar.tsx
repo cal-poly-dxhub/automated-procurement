@@ -1,8 +1,9 @@
+import { _style } from "../assets/types";
 import Container from "./Container";
 import Link from "./Link";
 import Text from "./Text";
 
-const Navbar = ({ style }: { style?: any }) => {
+const Navbar = ({ style }: { style?: _style }) => {
   return (
     <Container style={{ ...styles.container, ...style }}>
       <div className="no-dec" style={styles.brand}>
