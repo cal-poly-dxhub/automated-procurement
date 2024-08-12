@@ -12,30 +12,30 @@ import SOWReadthrough from "./pages/sowgen/SOWReadthrough";
 import Dashboard from "./Dashboard/Dashboard";
 import EditPage from "./Document/EditPage";
 
-import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
+// import { Authenticator } from "@aws-amplify/ui-react";
+// import "@aws-amplify/ui-react/styles.css";
 
 const App = () => {
   return (
-    <Authenticator className="auth">
-      {({ signOut, user }) => (
-        <Router>
-          <Routes>
-            {/* <Route path="/" element={<Landing />} /> */}
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/contract-gen" element={<ContractGen />} />
-            <Route path="/contract-read" element={<ContractRead />} />
-            <Route path="/sow-intro" element={<IntroPage />} />
-            <Route path="/sow-gen" element={<SOWGen />} />
-            <Route path="/sow-finish" element={<SOWFinish />} />
-            <Route path="/sow-readthrough" element={<SOWReadthrough />} />
-            <Route path="/amend-clause" element={<AmendClause />} />
-            {/* not in nav */}
-            <Route path="/edit-document" element={<EditPage />} />
-          </Routes>
-        </Router>
-      )}
-    </Authenticator>
+    // <Authenticator className="auth">
+    //   {({ signOut, user }) => (
+    <Router>
+      <Routes>
+        {/* <Route path="/" element={<Landing />} /> */}
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/contract-gen" element={<ContractGen />} />
+        <Route path="/contract-read" element={<ContractRead />} />
+        <Route path="/sow-intro" element={<IntroPage />} />
+        <Route path="/sow-gen" element={<SOWGen />} />
+        <Route path="/sow-finish" element={<SOWFinish />} />
+        <Route path="/sow-readthrough" element={<SOWReadthrough />} />
+        <Route path="/amend-clause" element={<AmendClause />} />
+        {/* not in nav */}
+        <Route path="/edit-document" element={<EditPage />} />
+      </Routes>
+    </Router>
+    //   )}
+    // </Authenticator>
   );
 };
 
