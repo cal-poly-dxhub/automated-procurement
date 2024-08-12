@@ -4,10 +4,10 @@ import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-import { Amplify } from "aws-amplify";
-import outputs from "./assets/amplify_outputs.json";
+// import { Amplify } from "aws-amplify";
+// import outputs from "./assets/amplify_outputs.json";
 
-Amplify.configure(outputs);
+// Amplify.configure(outputs);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
