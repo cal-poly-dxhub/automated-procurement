@@ -12,7 +12,7 @@ const ChatBox = ({
 }) => {
   return (
     <Container style={{ ...styles.container, ...style }}>
-      <Text type="subtitle">ChatBox</Text>
+      <Text type="subtitle">Enter requirements for selected text</Text>
       <TextField onSubmit={onSubmit} button autoFocus />
     </Container>
   );
@@ -25,8 +25,8 @@ const styles = {
     width: "30vw",
     height: "10rem",
     borderRadius: 10,
-    borderColor: "#000",
-    borderWidth: 2,
     padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 };

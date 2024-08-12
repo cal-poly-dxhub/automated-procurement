@@ -35,6 +35,13 @@ select {
   color: var(--text-color);
 }
 
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .row {
   display: flex;
   flex-direction: row;

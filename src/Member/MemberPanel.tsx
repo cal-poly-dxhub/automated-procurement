@@ -8,7 +8,7 @@ import { _style } from "../assets/types";
 const MemberPanel = ({ style }: { style?: _style }) => {
   const sortedMembers = companies.members.sort(
     (a, b) =>
-      (a.permission === "admin" ? 1 : -1) + (b.permission === "admin" ? 1 : -1)
+      (b.permission === "admin" ? 1 : -1) - (a.permission === "admin" ? 1 : -1)
   );
   return (
     <Container style={{ ...styles.container, ...style }} className="scrollY">
