@@ -35,6 +35,18 @@ select {
   color: var(--text-color);
 }
 
+button {
+  border: none;
+  cursor: pointer;
+}
+
+input {
+  border: none;
+  border-radius: 4px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+}
+
 .auth {
   display: flex;
   justify-content: center;

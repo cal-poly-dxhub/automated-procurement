@@ -42,5 +42,7 @@ const Link = ({
 export default Link;
 
 const styles = {
-  link: {},
+  link: {
+    textDecoration: "none",
+  },
 };

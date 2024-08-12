@@ -5,7 +5,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
+import outputs from "./assets/amplify_outputs.json";
 
 Amplify.configure(outputs);
 

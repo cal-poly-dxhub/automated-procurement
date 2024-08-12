@@ -7,6 +7,7 @@ const theme = {
     alternateBackground: "#e1e1e1",
     text: "#212529",
     hover: "#133827",
+    lightHover: "#c8ddc8",
     border: "#d3d1d1",
     click: "#436857",
   },

@@ -12,13 +12,14 @@ const Navbar = ({ style }: { style?: _style }) => {
         </Link>
       </div>
       <div className="row">
-        {/* <a href="/contract-gen">Contract Generator</a>
-        <a href="/contract-read">Contract Reader</a> */}
         <Link href="/sow-intro" className="no-dec" style={styles.link}>
           <Text type="subtitle">SOW Generator</Text>
         </Link>
         <Link href="/amend-clause" className="no-dec" style={styles.link}>
           <Text type="subtitle">Amend Clause</Text>
+        </Link>
+        <Link href="/login" className="no-dec" style={styles.link}>
+          <Text type="subtitle">Login</Text>
         </Link>
       </div>
     </Container>
@@ -34,7 +35,7 @@ const styles = {
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 20,
-    height: "7vh",
+    height: "4rem",
   },
   brand: {
     textDecoration: "none",

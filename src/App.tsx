@@ -12,13 +12,12 @@ import SOWReadthrough from "./pages/sowgen/SOWReadthrough";
 import Dashboard from "./Dashboard/Dashboard";
 import EditPage from "./Document/EditPage";
 
-// import { Authenticator } from "@aws-amplify/ui-react";
-// import "@aws-amplify/ui-react/styles.css";
+import ConfirmPage from "./Auth/ConfirmPage";
+import LoginPage from "./Auth/LoginPage";
+import SignupPage from "./Auth/SignupPage";
 
 const App = () => {
   return (
-    // <Authenticator className="auth">
-    //   {({ signOut, user }) => (
     <Router>
       <Routes>
         {/* <Route path="/" element={<Landing />} /> */}
@@ -32,10 +31,12 @@ const App = () => {
         <Route path="/amend-clause" element={<AmendClause />} />
         {/* not in nav */}
         <Route path="/edit-document" element={<EditPage />} />
+        {/* auth */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/confirm" element={<ConfirmPage />} />
       </Routes>
     </Router>
-    //   )}
-    // </Authenticator>
   );
 };
 
