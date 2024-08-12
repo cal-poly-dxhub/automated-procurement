@@ -26,6 +26,10 @@ const SignupPage = () => {
         },
       });
 
+      if (!isSignUpComplete) {
+        window.location.href = `/confirm/${userId}?next=${nextStep}`;
+      }
+
       console.log("Signup successful");
     } catch (error) {
       alert("Signup failed: " + error);
