@@ -102,16 +102,27 @@ export default EditPage;
 const styles = {
   container: {
     width: "100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "2rem",
   },
   width: {
-    width: "40vw",
-    paddingLeft: "30vw",
-    paddingRight: "30vw",
+    width: "60vw",
+    maxWidth: "800px",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+    padding: "2rem",
   },
   boxContainer: {
     display: "block",
   },
   chatBox: {
-    marginTop: 10,
+    marginTop: "1rem",
+    backgroundColor: "#f5f5f5",
+    borderRadius: "8px",
+    padding: "1rem",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
   },
 };
