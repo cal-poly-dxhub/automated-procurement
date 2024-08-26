@@ -6,35 +6,13 @@ import Input from "../components/Input";
 import Navbar from "../components/Navbar";
 import Text from "../components/Text";
 
-import { signUp } from "aws-amplify/auth";
-
 const SignupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignup = async () => {
-    try {
-      const { isSignUpComplete, userId, nextStep } = await signUp({
-        username: email,
-        password,
-        options: {
-          userAttributes: {
-            email,
-            name,
-          },
-        },
-      });
-
-      if (!isSignUpComplete) {
-        window.location.href = `/confirm/${userId}?next=${nextStep}`;
-      }
-
-      console.log("Signup successful");
-    } catch (error) {
-      alert("Signup failed: " + error);
-      console.error("Signup failed:", error);
-    }
+    // signup logic here
   };
 
   return (

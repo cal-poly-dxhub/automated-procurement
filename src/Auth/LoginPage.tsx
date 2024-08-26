@@ -11,11 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    try {
-      console.log("Login successful");
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    // login logic here
   };
 
   return (

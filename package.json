@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/cli": "^12.12.6",
-    "@aws-amplify/ui-react": "^6.1.14",
     "@aws-sdk/client-bedrock-runtime": "^3.602.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^5.16.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -14,8 +15,6 @@
     "@types/node": "^16.18.101",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "aws-amplify": "^6.5.0",
-    "create-amplify": "1.0.4",
     "docx": "^8.5.0",
     "fs": "^0.0.1-security",
     "react": "^18.3.1",
@@ -49,8 +48,6 @@
     ]
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.0.5",
-    "@aws-amplify/backend-cli": "^1.2.3",
     "aws-cdk": "^2",
     "aws-cdk-lib": "^2",
     "constructs": "^10.0.0",

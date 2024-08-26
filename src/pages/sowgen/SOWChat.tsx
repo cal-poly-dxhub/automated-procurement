@@ -123,9 +123,8 @@ const SOWChat = ({
   };
 
   const getMessages = () => {
-    const currentContext = contexts.find(
-      (c) => c.title === currentClause.title
-    )?.context;
+    const currentContext = contexts.find((c) => c.title === currentClause.title)
+      ?.context;
 
     if (!currentContext) {
       return [];
@@ -234,6 +233,7 @@ const SOWChat = ({
             <button
               onClick={() => {
                 console.log(contexts);
+                // console.log(JSON.stringify(contexts, null, 2));
               }}
             >
               Log Context

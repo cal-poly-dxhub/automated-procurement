@@ -10,12 +10,7 @@ const ConfirmPage = () => {
   const [confirmationCode, setConfirmationCode] = useState("");
 
   const handleConfirmation = async () => {
-    try {
-      console.log("Signup confirmation successful");
-      // Additional logic to verify the code and complete the signup process
-    } catch (error) {
-      console.error("Signup confirmation failed:", error);
-    }
+    // confirmation
   };
 
   return (

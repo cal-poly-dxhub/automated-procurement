@@ -122,9 +122,7 @@ const getBedrockResponse = async (
     });
 
     const response = await client.send(command);
-    // console.log(JSON.stringify(response));
     const decodedResponseBody = new TextDecoder().decode(response.body);
-    // console.log(JSON.stringify(decodedResponseBody));
     const responseBody = JSON.parse(decodedResponseBody);
     const responses = responseBody.content;
     return responses;
