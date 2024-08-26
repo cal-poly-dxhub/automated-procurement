@@ -1,13 +1,23 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import "./CurDocument.css";
+import { _style } from "../assets/types";
 
-const CurDocument = ({
+const DocumentPanel = ({
   document,
   setDocument,
   documentTitle,
   setCurrentClause,
   sowgenContext,
   debug = false,
+  style,
 }: {
   document: {
     title: string;
@@ -54,8 +64,10 @@ const CurDocument = ({
     documentTitle: string | null;
   };
   debug?: boolean;
+  style?: _style;
 }) => {
   const navigate = useNavigate();
+
   const handleExport = async () => {
     navigate("/sow-finish", {
       state: sowgenContext,
@@ -63,15 +75,21 @@ const CurDocument = ({
   };
 
   return (
-    <div className="current-document">
-      <h1>Current Document</h1>
-      <div className="documnet">
+    <Box sx={style} height="auto">
+      <Typography variant="h4" gutterBottom>
+        Current Document
+      </Typography>
+      <Box>
         {document.map((doc, index) => (
-          <div key={index} className="doc-item">
-            <h3>{doc.title}</h3>
-            <p>{doc.content}</p>
-            <div className="doc-buttons">
-              <button
+          <Card key={index} sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="h6">{doc.title}</Typography>
+              <Typography variant="body1">{doc.content}</Typography>
+            </CardContent>
+            <Divider />
+            <CardActions>
+              <Button
+                variant="contained"
                 onClick={() => {
                   setCurrentClause({
                     title: doc.title,
@@ -80,34 +98,38 @@ const CurDocument = ({
                     truths: "",
                   });
                 }}
-                className="button"
               >
                 Edit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
                 onClick={() => {
                   setDocument(document.filter((_, i) => i !== index));
                 }}
-                className="button"
               >
                 Remove
-              </button>
-            </div>
-          </div>
+              </Button>
+            </CardActions>
+          </Card>
         ))}
-      </div>
-      <div className="doc-bottom-buttons">
-        <button className="button" onClick={handleExport}>
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <Button variant="contained" onClick={handleExport}>
           Export Document
-        </button>
+        </Button>
         {debug && (
-          <button className="button" onClick={() => console.log(document)}>
+          <Button
+            variant="contained"
+            sx={{ ml: 2 }}
+            onClick={() => console.log(document)}
+          >
             Log Document
-          </button>
+          </Button>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
-export default CurDocument;
+export default DocumentPanel;

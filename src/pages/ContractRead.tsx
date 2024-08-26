@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./ContractRead.css";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 import { readContract } from "../scripts/LLMGeneral";
 
 const ContractRead = () => {

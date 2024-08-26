@@ -1,6 +1,5 @@
-import { theme } from "../assets/theme";
-import Item from "../components/Item";
-import Text from "../components/Text";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 const Member = ({
   m,
@@ -14,35 +13,21 @@ const Member = ({
   const { first_name, last_name, permission } = m;
 
   return (
-    <Item
-      style={styles.container}
-      hoverBackgroundColor={theme.colors.alternate}
-      className="row"
-    >
-      <div className="row" style={styles.nameBox}>
-        <Text>{first_name}</Text>
-        <Text>{last_name}</Text>
-      </div>
-      <Text>{permission}</Text>
-    </Item>
+    <Button>
+      <Typography
+        sx={{
+          display: "flex",
+          gap: 0.25,
+          maxWidth: "11rem",
+          overflow: "hidden",
+        }}
+        noWrap
+      >
+        {first_name} {last_name}
+      </Typography>
+      <Typography>{permission}</Typography>
+    </Button>
   );
 };
 
 export default Member;
-
-const styles = {
-  container: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    maxHeight: "5rem",
-    justifyContent: "space-between",
-    overflow: "hidden",
-  },
-  nameBox: {
-    gap: "0.25rem",
-    maxWidth: "11rem",
-    overflow: "hidden",
-  },
-};

@@ -1,42 +1,24 @@
-import Navbar from "../components/Navbar";
+import Box from "@mui/material/Box";
 import CategoryDocumentPanel from "../Document/CategoryDocumentPanel";
 import RecentDocumentPanel from "../Document/RecentDocumentPanel";
 import MemberPanel from "../Member/MemberPanel";
 
 const Dashboard = () => {
   return (
-    <div style={styles.container} className="column">
-      <Navbar style={{ height: "7vh" }} />
-      <div className="row" style={{ height: "93vh" }}>
-        <MemberPanel style={styles.memberPanel} />
-        <div className="column" style={{ height: "93vh", width: "78vw" }}>
-          <RecentDocumentPanel style={styles.recentDocumentPanel} />
-          <CategoryDocumentPanel style={styles.customDocumentPanel} />
-        </div>
-      </div>
-    </div>
+    <Box display="flex" height="93vh">
+      <Box width="22vw">
+        <MemberPanel />
+      </Box>
+      <Box width="78vw" display="flex" flexDirection="column">
+        <Box height="32vh">
+          <RecentDocumentPanel />
+        </Box>
+        <Box height="50vh">
+          <CategoryDocumentPanel />
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
 export default Dashboard;
-
-const styles = {
-  container: {
-    display: "flex",
-    flex: 1,
-    // width: "100vw",
-    // height: "100vh",
-    overflow: "hidden",
-  },
-  memberPanel: {
-    width: "22vw",
-  },
-  recentDocumentPanel: {
-    width: "78vw",
-    height: "32vh",
-  },
-  customDocumentPanel: {
-    width: "78vw",
-    height: "50vh",
-  },
-};

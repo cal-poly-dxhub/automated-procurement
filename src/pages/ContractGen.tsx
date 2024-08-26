@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./ContractGen.css";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 import { generateContract } from "../scripts/LLMGeneral";
 
 const ContractGen = () => {

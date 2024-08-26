@@ -1,29 +1,24 @@
-import Container from "../components/Container";
-import Text from "../components/Text";
-import Member from "./Member";
-
-import companies from "../assets/companies.json";
-import { _style } from "../assets/types";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { _company, _style } from "../assets/types";
 
 const MemberPanel = ({ style }: { style?: _style }) => {
-  const sortedMembers = companies.members.sort(
-    (a, b) =>
-      (b.permission === "admin" ? 1 : -1) - (a.permission === "admin" ? 1 : -1)
-  );
+  const company: _company = {} as _company;
+
   return (
-    <Container style={{ ...styles.container, ...style }} className="scrollY">
-      <Text type="title">{companies.name} Members</Text>
-      {sortedMembers.map((m) => (
-        <Member m={m} />
-      ))}
-    </Container>
+    <Box sx={{ padding: 2, ...style }} overflow="auto" height="100%">
+      <Typography variant="h6" mb={2}>
+        {/* {company.name} Members */}
+        Cal Poly Members
+      </Typography>
+      {/* {company.members.map((m, index) => (
+        <div key={m.first_name}>
+          <Member m={m} />
+          {index < company.members.length - 1 && <Box my={1} />}
+        </div>
+      ))} */}
+    </Box>
   );
 };
 
 export default MemberPanel;
-
-const styles = {
-  container: {
-    padding: 10,
-  },
-};

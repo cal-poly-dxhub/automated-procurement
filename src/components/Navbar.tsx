@@ -1,48 +1,33 @@
+import { Link } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { _style } from "../assets/types";
-import Container from "./Container";
-import Link from "./Link";
-import Text from "./Text";
 
 const Navbar = ({ style }: { style?: _style }) => {
   return (
-    <Container style={{ ...styles.container, ...style }}>
-      <div className="no-dec" style={styles.brand}>
-        <Link href="/" className="no-dec">
-          <Text type="title">DxHub Automated Procurement</Text>
-        </Link>
-      </div>
-      <div className="row">
-        <Link href="/sow-intro" className="no-dec" style={styles.link}>
-          <Text type="subtitle">SOW Generator</Text>
-        </Link>
-        <Link href="/amend-clause" className="no-dec" style={styles.link}>
-          <Text type="subtitle">Amend Clause</Text>
-        </Link>
-        <Link href="/login" className="no-dec" style={styles.link}>
-          <Text type="subtitle">Login</Text>
-        </Link>
-      </div>
-    </Container>
+    <Box>
+      <AppBar position="static" style={style}>
+        <Toolbar>
+          <Link href="/" color="inherit" underline="none">
+            <Typography variant="h6">DxHub Automated Procurement</Typography>
+          </Link>
+          <Box ml="auto" display="flex" alignItems="center">
+            <Link href="/sow-intro" color="inherit" underline="none" mx={2}>
+              <Typography variant="body1">SOW Generator</Typography>
+            </Link>
+            <Link href="/amend-clause" color="inherit" underline="none" mx={2}>
+              <Typography variant="body1">Amend Clause</Typography>
+            </Link>
+            <Link href="/login" color="inherit" underline="none" mx={2}>
+              <Typography variant="body1">Login</Typography>
+            </Link>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 
 export default Navbar;
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: "4rem",
-  },
-  brand: {
-    textDecoration: "none",
-    fontWeight: "bold",
-    fontSize: "1.2rem",
-  },
-  link: {
-    marginLeft: 20,
-  },
-};

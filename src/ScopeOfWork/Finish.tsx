@@ -1,15 +1,15 @@
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import prompts from "../../assets/prompt.json";
-import Navbar from "../../components/Navbar";
-import { downloadDocument } from "../../scripts/Docx";
+import prompts from "../assets/prompt.json";
+import Navbar from "../Components/Navbar";
+import { downloadDocument } from "../scripts/Docx";
 import {
   getBedrockResponse,
   getCaluseTags,
   getNumberTags,
   getTitleTags,
-} from "../../scripts/LLMGeneral";
-import "./SOWFinish.css";
+} from "../scripts/LLMGeneral";
 
 const sow_finalize = prompts["sow_finalize"];
 
@@ -71,24 +71,56 @@ const Finish = () => {
   }, [generated.current]); // generate document on start
 
   return (
-    <div className="sow-finish-container">
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Navbar />
-      <div className="sow-finish">
-        <h1>Finalize and Export Document</h1>
-        <div className="document">
-          <h2>{documentTitle}</h2>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: 4,
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Finalize and Export Document
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 2,
+            border: "1px solid #ccc",
+            borderRadius: 1,
+            marginBottom: 2,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            {documentTitle}
+          </Typography>
           {formattedDocument &&
             formattedDocument.map((doc, index) => (
-              <div key={index} className="doc-clause">
-                <h3>{doc.title}</h3>
-                <p>{doc.content}</p>
-              </div>
+              <Box
+                key={index}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginBottom: 2,
+                }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  {doc.title}
+                </Typography>
+                <Typography variant="body1">{doc.content}</Typography>
+              </Box>
             ))}
-          {formattedDocument.length === 0 && <p>Generating Document...</p>}
-        </div>
-        <div className="doc-buttons">
-          <button
-            className="button"
+          {formattedDocument.length === 0 && (
+            <Typography variant="body1">Generating Document...</Typography>
+          )}
+        </Box>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button
+            variant="contained"
             onClick={() => {
               navigate(
                 `/sow-gen?category=${sowgenContext.category}&userInstitution=${sowgenContext.userInstitution}&supplier=${sowgenContext.supplier}&documentPurpose=${sowgenContext.documentPurpose}`,
@@ -101,9 +133,9 @@ const Finish = () => {
             }}
           >
             Edit Document
-          </button>
-          <button
-            className="button"
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => {
               if (!generated.current) {
                 return;
@@ -113,9 +145,9 @@ const Finish = () => {
             }}
           >
             Download Document
-          </button>
-          <button
-            className="button"
+          </Button>
+          <Button
+            variant="contained"
             onClick={() => {
               if (!generated.current) {
                 return;
@@ -126,10 +158,10 @@ const Finish = () => {
             }}
           >
             Reformat Document
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

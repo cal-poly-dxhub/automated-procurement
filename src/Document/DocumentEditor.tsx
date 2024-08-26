@@ -1,5 +1,5 @@
 import { _document } from "../assets/types";
-import Text from "../components/Text";
+import Text from "../Components/Text";
 
 const DocumentEditor = ({
   document,

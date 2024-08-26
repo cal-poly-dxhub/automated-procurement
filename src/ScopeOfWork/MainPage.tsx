@@ -1,31 +1,28 @@
+import { Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import "./SOWGen.css";
-
-import Navbar from "../../components/Navbar";
 
 import {
   getBedrockResponse,
   getIncrementalTruths,
-} from "../../scripts/LLMGeneral";
-import ALaCarte from "./ALaCarte";
-import CurDocument from "./CurDocument";
-import SOWChat from "./SOWChat";
+} from "../scripts/LLMGeneral";
 
-import prompts from "../../assets/prompt.json";
-import templates from "../../assets/SOWCategories.json";
+import prompts from "../assets/prompt.json";
+import templates from "../assets/SOWCategories.json";
+import Chat from "./Chat";
+import ClauseSelector from "./ClauseSelector";
+import DocumentPanel from "./DocumentPanel";
 const sow_prompt = prompts["sow_prompt"];
 const ScopeOfWork = templates.Clauses.find(
   (clause) => clause.category === "All"
 )?.clauses.find((clause) => clause.title === "Scope of Work");
 
-const DEBUG = true;
+const DEBUG = false;
 
-const SOWGen = () => {
+const MainPage = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
 
-  // from finish doc
   const sowgenContext: {
     contexts: {
       title: string;
@@ -106,7 +103,6 @@ const SOWGen = () => {
       return;
     }
 
-    // const incrementalContext = getIncrementalContext(document);
     const incrementalTruths = getIncrementalTruths(document);
 
     const newPrompt = sow_prompt
@@ -123,14 +119,12 @@ const SOWGen = () => {
         "--PURPOSE--",
         category?.toString() + ", " + documentPurpose?.toString()
       )
-      // replace --SCOPE-- with the content of the Scope of Work clause
       .replaceAll(
         "--SCOPE--",
         document
           .find((doc) => doc.title === "Scope of Work")
-          ?.content.toString() ?? "" // TODO: ????????????? hah?
+          ?.content.toString() ?? ""
       )
-      // .concat(incrementalContext);
       .concat(incrementalTruths);
 
     const newContext = [
@@ -207,17 +201,25 @@ const SOWGen = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <div className="sow-tri-container">
-        <ALaCarte
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexGrow: 1,
+          padding: 2,
+          gap: 2,
+          overflowY: "auto",
+        }}
+      >
+        <ClauseSelector
           currentCategory={category ?? ""}
           currentClause={currentClause}
           handleAddClause={handleAddClause}
           document={document}
           debug={DEBUG}
+          style={{ width: "25vw" }}
         />
-        <SOWChat
+        <Chat
           loading={loading}
           setLoading={setLoading}
           contexts={contexts}
@@ -227,8 +229,9 @@ const SOWGen = () => {
           setCurrentClause={setCurrentClause}
           document={document}
           debug={DEBUG}
+          style={{ width: "50vw" }}
         />
-        <CurDocument
+        <DocumentPanel
           document={document}
           setDocument={setDocument}
           documentTitle={category + " Scope of Work"}
@@ -244,10 +247,11 @@ const SOWGen = () => {
           }}
           setCurrentClause={setCurrentClause}
           debug={DEBUG}
+          style={{ width: "25vw" }}
         />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
-export default SOWGen;
+export default MainPage;

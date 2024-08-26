@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { theme } from "../assets/theme";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import Input from "../components/Input";
-import Navbar from "../components/Navbar";
-import Text from "../components/Text";
+import Button from "../Components/Button";
+import Container from "../Components/Container";
+import Input from "../Components/Input";
+import Navbar from "../Components/Navbar";
+import Text from "../Components/Text";
 
 const ConfirmPage = () => {
   const [confirmationCode, setConfirmationCode] = useState("");

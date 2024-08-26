@@ -1,36 +1,22 @@
-import Container from "../components/Container";
-import Text from "../components/Text";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { _document, _style } from "../assets/types";
 import Document from "./Document";
 
-import documents from "../assets/documents.json";
-import { _style } from "../assets/types";
-
 const RecentDocumentPanel = ({ style }: { style?: _style }) => {
+  const documents: _document[] = [];
   return (
-    <Container className="column" style={{ ...styles.container, ...style }}>
-      <Text type="title" style={{ marginBottom: "1rem" }}>
+    <Box sx={{ p: 2, ...style }}>
+      <Typography variant="h6" mb={1}>
         Recent Documents
-      </Text>
-      <div style={styles.documents} className="row flex-grid">
+      </Typography>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
         {documents.map((d) => (
-          <Document d={d} style={styles.item} />
+          <Document key={d.title} d={d} style={{ width: "30%" }} />
         ))}
-      </div>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 
 export default RecentDocumentPanel;
-
-const styles = {
-  container: {
-    padding: "1rem",
-  },
-  documents: {
-    // flexWrap: "wrap",
-  },
-  item: {
-    width: "30%",
-    margin: 10,
-  },
-};

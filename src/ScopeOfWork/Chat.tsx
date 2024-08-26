@@ -1,15 +1,25 @@
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Input,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
+import { _style } from "../assets/types";
+import Message from "../Components/Message";
 import {
   getBedrockResponse,
   getCaluseTags,
   getIncrementalTruths,
-  getResponseTags,
   getSummaryTags,
   getTruthsTags,
-} from "../../scripts/LLMGeneral";
-import "./SOWChat.css";
+} from "../scripts/LLMGeneral";
 
-const SOWChat = ({
+const Chat = ({
   loading,
   setLoading,
   contexts,
@@ -19,6 +29,7 @@ const SOWChat = ({
   setCurrentClause,
   document,
   debug = false,
+  style,
 }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
@@ -52,11 +63,12 @@ const SOWChat = ({
     truths: string;
   }[];
   debug?: boolean;
+  style?: _style;
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [clausePopup, setClausePopup] = useState<boolean>(false);
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
@@ -78,11 +90,6 @@ const SOWChat = ({
       title: currentClause.title,
       context: [],
     };
-
-    // const incrementalContext = getIncrementalContext(document);
-    // if (oldContext.context.length > 0) {
-    //   oldContext.context[0].content[0].text += incrementalContext;
-    // }
 
     const incrementalTruths = getIncrementalTruths(document);
     if (oldContext.context.length > 0) {
@@ -123,30 +130,15 @@ const SOWChat = ({
   };
 
   const getMessages = () => {
-    const currentContext = contexts.find((c) => c.title === currentClause.title)
-      ?.context;
+    const currentContext = contexts.find(
+      (c) => c.title === currentClause.title
+    )?.context;
 
     if (!currentContext) {
       return [];
     }
 
     return currentContext.map((message, index) => {
-      if (message.role === "assistant") {
-        if (getCaluseTags(message.content) !== "") {
-          return (
-            <div key={index} className="message assistant">
-              {getCaluseTags(message.content)}
-            </div>
-          );
-        }
-
-        return (
-          <div key={index} className="message assistant">
-            {getResponseTags(message.content)}
-          </div>
-        );
-      }
-
       if (
         message.role === "user" &&
         message.content[0].text.includes(
@@ -154,22 +146,24 @@ const SOWChat = ({
         )
       ) {
         return (
-          <div key={index} className="message user">
-            Start working on {currentClause.title}
-          </div>
+          <Box
+            key={index}
+            sx={{
+              marginBottom: 2,
+              backgroundColor: "#f0f0f0",
+              padding: 1,
+              borderRadius: 1,
+              width: "100%",
+            }}
+          >
+            <Typography variant="body1" color="secondary">
+              Start working on {currentClause.title}
+            </Typography>
+          </Box>
         );
       }
 
-      return (
-        <div
-          key={index}
-          className={`message ${
-            message.role === "user" ? "user" : "assistant"
-          }`}
-        >
-          {message?.content[0]?.text}
-        </div>
-      );
+      return <Message key={index} message={message} />;
     });
   };
 
@@ -180,69 +174,98 @@ const SOWChat = ({
   }, [contexts, loading]); // auto scroll to bottom
 
   return (
-    <div className="sow-container">
-      <div className="chat-box-title">
-        <h2>Scope of Work Generator</h2>
-      </div>
-      <div className="contract-gen">
-        <div className="message-container">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        bgcolor: "background.paper",
+        height: "auto",
+        maxHeight: "100%",
+        ...style,
+      }}
+    >
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
+        <Typography variant="h4">Scope of Work Generator</Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          marginTop: 2,
+          padding: 2,
+          overflowY: "auto",
+        }}
+      >
+        <Box
+          className="message-container"
+          sx={{
+            width: "auto",
+          }}
+        >
           {getMessages()}
-          {loading && <div className="message assistant">Loading...</div>}
-          {clausePopup && (
-            <div className="clause-popup-background">
-              <div className="clause-popup">
-                <div className="clause">
-                  <h3 className="clause-title">{currentClause.title}</h3>
-                  <p className="clause-content">{currentClause.clause}</p>
-                </div>
-                <div className="clause-buttons">
-                  <button
-                    className="button"
-                    onClick={() => {
-                      setAccepted(true);
-                      setClausePopup(false);
-                    }}
-                  >
-                    Accept Clause
-                  </button>
-                  <button
-                    className="button"
-                    onClick={() => setClausePopup(false)}
-                  >
-                    Continue Editing
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="input-container">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Type your message..."
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSendMessage();
-              }
+        </Box>
+        {loading && (
+          <Box sx={{ marginTop: 2 }}>
+            <Typography variant="body1">Loading...</Typography>
+          </Box>
+        )}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: 2,
+          padding: 2,
+        }}
+      >
+        <Input
+          sx={{ flexGrow: 1, marginRight: 2 }}
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Type your message..."
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSendMessage();
+            }
+          }}
+        />
+        <Button variant="contained" onClick={handleSendMessage}>
+          Send
+        </Button>
+        {debug && (
+          <Button
+            variant="contained"
+            onClick={() => {
+              console.log(contexts);
             }}
-          />
-          <button onClick={handleSendMessage}>Send</button>
-          {debug && (
-            <button
-              onClick={() => {
-                console.log(contexts);
-                // console.log(JSON.stringify(contexts, null, 2));
-              }}
-            >
-              Log Context
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+            sx={{ marginLeft: 2 }}
+          >
+            Log Context
+          </Button>
+        )}
+      </Box>
+      <Dialog open={clausePopup} onClose={() => setClausePopup(false)}>
+        <DialogTitle>{currentClause.title}</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">{currentClause.clause}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setAccepted(true);
+              setClausePopup(false);
+            }}
+          >
+            Accept Clause
+          </Button>
+          <Button onClick={() => setClausePopup(false)}>
+            Continue Editing
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 
-export default SOWChat;
+export default Chat;

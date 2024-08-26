@@ -27,3 +27,6 @@ yarn-error.log*
 amplify_outputs*
 amplifyconfiguration*
 amplify/node_modules
+
+# env
+.env

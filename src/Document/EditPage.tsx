@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { _clause, _document } from "../assets/types";
-import ChatBox from "../components/ChatBox";
-import Container from "../components/Container";
-import Navbar from "../components/Navbar";
+import ChatBox from "../Components/ChatBox";
+import Container from "../Components/Container";
+import Navbar from "../Components/Navbar";
 import { getBedrockResponse } from "../scripts/LLMGeneral";
 import DocumentEditor from "./DocumentEditor";
 
