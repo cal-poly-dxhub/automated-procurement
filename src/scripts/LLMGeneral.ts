@@ -1,20 +1,7 @@
-import {
-  BedrockRuntimeClient,
-  InvokeModelCommand,
-} from "@aws-sdk/client-bedrock-runtime";
 import p from "../assets/prompt.json";
 
 const gen_prompt = p["gen_prompt"];
 const read_prompt = p["read_prompt"];
-
-const model_id = "anthropic.claude-3-sonnet-20240229-v1:0";
-const client = new BedrockRuntimeClient({
-  region: "us-west-2",
-  credentials: {
-    accessKeyId: "",
-    secretAccessKey: "",
-  },
-});
 
 const generateContract = async (context: any[], userInput: string) => {
   const ctx = context;
@@ -109,31 +96,46 @@ const getBedrockResponse = async (
   messages: { role: string; content: { type: string; text: string }[] }[]
 ) => {
   try {
-    const payload = {
-      anthropic_version: "bedrock-2023-05-31",
-      max_tokens: 2048,
-      messages,
+    const body = JSON.stringify({
+      msg: messages,
+      system_prompt: "",
+    });
+    const url = process.env.REACT_APP_LAMBDA_ENDPOINT as string;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
     };
 
-    const command = new InvokeModelCommand({
-      contentType: "application/json",
-      body: JSON.stringify(payload),
-      modelId: model_id,
-    });
+    const response = await fetch(url, options);
+    const data = (await response.json()) as {
+      search_answer: string;
+    };
 
-    const response = await client.send(command);
-    const decodedResponseBody = new TextDecoder().decode(response.body);
-    const responseBody = JSON.parse(decodedResponseBody);
-    const responses = responseBody.content;
-    return responses;
+    return [
+      // {
+      //   role: data.role,
+      // content: [
+      {
+        type: "text",
+        text: data.search_answer,
+      },
+      //   ],
+      // },
+    ];
   } catch (e) {
     console.log(e);
     return [
-      {
-        role: "assistant",
-        content: [{ type: "text", text: "An error occurred" }],
-      },
+      // {
+      //   role: "assistant",
+      //   content:
+      // [
+      { type: "text", text: "An error occurred" },
     ];
+    //   },
+    // ];
   }
 };
 
